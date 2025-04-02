@@ -1,7 +1,7 @@
 CC = gcc
-CFLAGS = -std=c11 -Wall -I include
+CFLAGS = -Wall -I include
 TARGET = p.exe
-SRC = src/main.c src/lexer.c src/parser.c src/utils.c src/ad.c
+SRC = src/main.c src/lexer.c src/parser.c src/utils.c
 
 all: $(TARGET)
 

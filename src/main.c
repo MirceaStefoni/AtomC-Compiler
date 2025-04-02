@@ -23,14 +23,15 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    showTokens(tokens); // Optional: display tokens for debugging
+    showTokens(tokens); 
 
-    parse(tokens); // Call the parser
+    parse(tokens); 
 
     printf("Syntax analysis completed successfully.\n");
 
     // Cleanup
     free(source);
+    
     Token *tk = tokens;
     while (tk) {
         Token *next = tk->next;
