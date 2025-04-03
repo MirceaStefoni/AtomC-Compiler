@@ -410,25 +410,33 @@ const char* getTokenName(int code) {
 
 void showTokens(const Token *tokens)
 {
+
+	FILE *fp = fopen("results/tokens.txt", "w");
+    if (fp == NULL) {
+        perror("Error opening results/tokens.txt");
+        return;
+    }
+
 	for (const Token *tk = tokens; tk; tk = tk->next)
 	{
-		printf("%d\t%s", tk->line, getTokenName(tk->code));
+		fprintf(fp, "%d\t%s", tk->line, getTokenName(tk->code));
 		
 		switch(tk->code) {
 			case ID:
 			case STRING:
-				printf(":%s", tk->text);
+				fprintf(fp, ":%s", tk->text);
 				break;
 			case INT:
-				printf(":%d", tk->i);
+				fprintf(fp, ":%d", tk->i);
 				break;
 			case CHAR:
-				printf(":%c", tk->c);
+				fprintf(fp, ":%c", tk->c);
 				break;
 			case DOUBLE:
-				printf(":%g", tk->d);
+				fprintf(fp, ":%g", tk->d);
 				break;
 		}
-		printf("\n");
+		fprintf(fp, "\n");
 	}
+	fclose(fp);
 }

@@ -7,6 +7,9 @@
 extern Token *iTk;    
 extern Token *consumedTk; 
 
+void initParserLog(void);
+void closeParserLog(void);
+
 void tkerr(const char *fmt, ...);
 bool consume(int code);
 

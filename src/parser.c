@@ -7,6 +7,25 @@
 #include "parser.h"
 #include "lexer.h" 
 
+// Global file pointer for parser log
+FILE *parser_log_fp = NULL;
+
+// Function to initialize the parser log file
+void initParserLog() {
+    parser_log_fp = fopen("results/parser.txt", "w");
+    if (parser_log_fp == NULL) {
+        perror("Error opening results/parser.txt");
+        exit(EXIT_FAILURE); // Exit if we can't open the log file
+    }
+}
+
+// Function to close the parser log file
+void closeParserLog() {
+    if (parser_log_fp != NULL) {
+        fclose(parser_log_fp);
+        parser_log_fp = NULL;
+    }
+}
 
 const char *tkCodeName(int code) {
     switch (code) {
@@ -53,13 +72,13 @@ const char *tkCodeName(int code) {
 }
 
 void rule_start(const char *ruleName) {
-    printf("Enter %s\n", ruleName);
+    if (parser_log_fp) fprintf(parser_log_fp, "Enter %s\n", ruleName);
 }
 
 
 void rule_end(const char *ruleName, bool success) {
    
-    printf("Exit %s (%s)\n", ruleName, success ? "OK" : "FAIL");
+    if (parser_log_fp) fprintf(parser_log_fp, "Exit %s (%s)\n", ruleName, success ? "OK" : "FAIL");
 }
 
 
@@ -77,14 +96,14 @@ void tkerr(const char *fmt,...){
 	}
 
 bool consume(int code){
-    printf("consume(%s)",tkCodeName(code));
+    if (parser_log_fp) fprintf(parser_log_fp, "consume(%s)", tkCodeName(code));
     if(iTk->code==code){
         consumedTk=iTk;
         iTk=iTk->next;
-        printf(" => consumed\n");
+        if (parser_log_fp) fprintf(parser_log_fp, " => consumed\n");
         return true;
     }
-    printf(" => found %s\n",tkCodeName(iTk->code));
+    if (parser_log_fp) fprintf(parser_log_fp, " => found %s\n", tkCodeName(iTk->code));
     return false;
 }
 
@@ -713,8 +732,12 @@ bool unit() {
 }
 
 void parse(Token *tokens) {
+    initParserLog(); // Initialize the log file
     iTk = tokens;
     if (!unit()) {
         fprintf(stderr, "Syntax analysis failed at top level.\n");
+        // Optionally log the failure to the file too
+        if (parser_log_fp) fprintf(parser_log_fp, "Syntax analysis failed at top level.\n"); 
     }
+    closeParserLog(); // Close the log file
 }
