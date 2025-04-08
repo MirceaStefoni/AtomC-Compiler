@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vm.h"
+#include <stdio.h>
 
 // the domain analysis
 
@@ -77,6 +78,12 @@ typedef struct _Domain{
 
 // the current domain (the top of the domains's stack)
 extern Domain *symTable;
+// the file pointer for domain analysis output logging
+extern FILE *ad_log_fp;
+
+// Initialize/Close the domain analysis log file
+void initAdLog();
+void closeAdLog();
 
 // adds a domain to the top of the domains's stack
 Domain *pushDomain();

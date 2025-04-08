@@ -7,6 +7,24 @@
 #include "ad.h"
 
 Domain *symTable=NULL;
+FILE *ad_log_fp = NULL; // Define the global file pointer
+
+// Function to initialize the domain analysis log file
+void initAdLog() {
+	ad_log_fp = fopen("results/ad.txt", "w");
+	if (ad_log_fp == NULL) {
+		perror("Error opening results/ad.txt");
+		// Continue without file logging, output will go to stdout via checks
+	}
+}
+
+// Function to close the domain analysis log file
+void closeAdLog() {
+	if (ad_log_fp != NULL) {
+		fclose(ad_log_fp);
+		ad_log_fp = NULL;
+	}
+}
 
 int typeBaseSize(Type *t){
 	switch(t->tb){
@@ -77,6 +95,9 @@ void freeSymbol(Symbol *s){
 		case SK_VAR:
 			if(!s->owner)free(s->varMem);
 			break;
+		case SK_PARAM:
+			// DO nothing
+			break;
 		case SK_FN:
 			freeSymbols(s->fn.params);
 			freeSymbols(s->fn.locals);
@@ -104,66 +125,69 @@ void dropDomain(){
 	}
 
 void showNamedType(Type *t,const char *name){
+	FILE* out = ad_log_fp ? ad_log_fp : stdout; // Determine output stream
 	switch(t->tb){
-		case TB_INT:printf("int");break;
-		case TB_DOUBLE:printf("double");break;
-		case TB_CHAR:printf("char");break;
-		case TB_VOID:printf("void");break;
+		case TB_INT:fprintf(out, "int");break;
+		case TB_DOUBLE:fprintf(out, "double");break;
+		case TB_CHAR:fprintf(out, "char");break;
+		case TB_VOID:fprintf(out, "void");break;
 		default:		// TB_STRUCT
-			printf("struct %s",t->s->name);
+			fprintf(out, "struct %s",t->s->name);
 		}
-	if(name)printf(" %s",name);
-	if(t->n==0)printf("[]");
-	else if(t->n>0)printf("[%d]",t->n);
+	if(name)fprintf(out, " %s",name);
+	if(t->n==0)fprintf(out, "[]");
+	else if(t->n>0)fprintf(out, "[%d]",t->n);
 	}
 
 void showSymbol(Symbol *s){
+	FILE* out = ad_log_fp ? ad_log_fp : stdout; // Determine output stream
 	switch(s->kind){
 			case SK_VAR:
 				showNamedType(&s->type,s->name);
 				if(s->owner){
-					printf(";\t// size=%d, idx=%d\n",typeSize(&s->type),s->varIdx);
+					fprintf(out, ";\t// size=%d, idx=%d\n",typeSize(&s->type),s->varIdx);
 					}else{
-					printf(";\t// size=%d, mem=%p\n",typeSize(&s->type),s->varMem);
+					fprintf(out, ";\t// size=%d, mem=%p\n",typeSize(&s->type),s->varMem);
 					}
 				break;
 			case SK_PARAM:{
 				showNamedType(&s->type,s->name);
-				printf(" /*size=%d, idx=%d*/",typeSize(&s->type),s->paramIdx);
+				fprintf(out, " /*size=%d, idx=%d*/",typeSize(&s->type),s->paramIdx);
 				}break;
 			case SK_FN:{
 				showNamedType(&s->type,s->name);
-				printf("(");
+				fprintf(out, "(");
 				bool next=false;
 				for(Symbol *param=s->fn.params;param;param=param->next){
-					if(next)printf(", ");
-					showSymbol(param);
+					if(next)fprintf(out, ", ");
+					showSymbol(param); // Recursive call will use 'out'
 					next=true;
 					}
-				printf("){\n");
+				fprintf(out, "){\n");
 				for(Symbol *local=s->fn.locals;local;local=local->next){
-					printf("\t");
-					showSymbol(local);
+					fprintf(out, "\t");
+					showSymbol(local); // Recursive call will use 'out'
 					}
-				printf("\t}\n");
+				fprintf(out, "\t}\n");
 				}break;
 			case SK_STRUCT:{
-				printf("struct %s{\n",s->name);
+				fprintf(out, "struct %s{\n",s->name);
 				for(Symbol *m=s->structMembers;m;m=m->next){
-					printf("\t");
-					showSymbol(m);
+					fprintf(out, "\t");
+					showSymbol(m); // Recursive call will use 'out'
 					}
-				printf("\t};\t// size=%d\n",typeSize(&s->type));
+				fprintf(out, "\t};\t// size=%d\n",typeSize(&s->type));
 				}break;
 		}
 	}
 
 void showDomain(Domain *d,const char *name){
-	printf("// domain: %s\n",name);
+	FILE* out = ad_log_fp ? ad_log_fp : stdout; // Determine output stream
+	fprintf(out, "// domain: %s\n",name);
 	for(Symbol *s=d->symbols;s;s=s->next){
-		showSymbol(s);
+		showSymbol(s); // This will use 'out' correctly
 		}
-	puts("\n");
+	fprintf(out, "\n");
 	}
 
 Symbol *findSymbolInDomain(Domain *d,const char *name){
