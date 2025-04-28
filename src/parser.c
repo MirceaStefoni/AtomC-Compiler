@@ -711,17 +711,22 @@ bool exprEq() {
 bool exprEqPrim() {
     rule_start("exprEqPrim");
     while (true) {
-        Token *opToken = iTk;
-        bool consumedOp = consume(EQUAL) || consume(NOTEQ);
-        if (consumedOp) {
+        if (consume(EQUAL)) {
             if (exprRel()) {
-                continue;
+                continue; // Found EQUAL exprRel, continue loop
             } else {
-                tkerr("invalid expression after equality operator '%s'", opToken->text);
+                tkerr("invalid expression after equality operator '=='");
+                return false;
+            }
+        } else if (consume(NOTEQ)) {
+            if (exprRel()) {
+                continue; // Found NOTEQ exprRel, continue loop
+            } else {
+                tkerr("invalid expression after equality operator '!='");
                 return false;
             }
         } else {
-            break;
+            break; // No equality operator found, exit loop (epsilon case)
         }
     }
     rule_end("exprEqPrim", true);
@@ -747,28 +752,39 @@ bool exprRel() {
 bool exprRelPrim() {
     rule_start("exprRelPrim");
     while (true) {
-        Token *opToken = iTk; 
-        bool consumedOp = false;
 
-        if (consume(LESS) || consume(LESSEQ) || consume(GREATER) || consume(GREATEREQ)) {
-            consumedOp = true;
-        }
-
-        if (consumedOp) {
+        if (consume(LESS)) {
             if (exprAdd()) {
-              
-                continue;
+                continue; // Found LESS exprAdd, continue loop
             } else {
-        
-                tkerr("invalid expression after relational operator '%s'", opToken->text);
-                return false; 
+                 tkerr("invalid expression after relational operator '<'");
+                 return false;
+            }
+        } else if (consume(LESSEQ)) {
+             if (exprAdd()) {
+                continue; // Found LESSEQ exprAdd, continue loop
+            } else {
+                 tkerr("invalid expression after relational operator '<='");
+                 return false;
+            }
+        } else if (consume(GREATER)) {
+             if (exprAdd()) {
+                continue; // Found GREATER exprAdd, continue loop
+            } else {
+                 tkerr("invalid expression after relational operator '>'");
+                 return false;
+            }
+        } else if (consume(GREATEREQ)) {
+             if (exprAdd()) {
+                continue; // Found GREATEREQ exprAdd, continue loop
+            } else {
+                 tkerr("invalid expression after relational operator '>='");
+                 return false;
             }
         } else {
-        
-            break;
+            break; // No relational operator found, exit loop (epsilon case)
         }
     }
- 
     rule_end("exprRelPrim", true);
     return true;
 }
@@ -792,17 +808,23 @@ bool exprAdd() {
 bool exprAddPrim() {
     rule_start("exprAddPrim");
     while (true) {
-        Token *opToken = iTk;
-        bool consumedOp = consume(ADD) || consume(SUB);
-        if (consumedOp) {
+        Token *opToken = iTk; // Keep track of the potential operator token
+        if (consume(ADD)) {
             if (exprMul()) {
-                continue;
+                continue; // Found ADD exprMul, continue loop
+            } else {
+                 tkerr("invalid expression after additive operator '%s'", opToken->text);
+                 return false;
+            }
+        } else if (consume(SUB)) {
+             if (exprMul()) {
+                continue; // Found SUB exprMul, continue loop
             } else {
                  tkerr("invalid expression after additive operator '%s'", opToken->text);
                  return false;
             }
         } else {
-            break;
+            break; // No ADD or SUB found, exit loop (epsilon case)
         }
     }
     rule_end("exprAddPrim", true);
@@ -828,17 +850,22 @@ bool exprMul() {
 bool exprMulPrim() {
     rule_start("exprMulPrim");
     while (true) {
-        Token *opToken = iTk;
-        bool consumedOp = consume(MUL) || consume(DIV);
-        if (consumedOp) {
+        if (consume(MUL)) {
             if (exprCast()) {
-                continue;
+                continue; // Found MUL exprCast, continue loop
             } else {
-                 tkerr("invalid expression after multiplicative operator '%s'", opToken->text);
+                 tkerr("invalid expression after multiplicative operator '*'");
+                 return false;
+            }
+        } else if (consume(DIV)) {
+            if (exprCast()) {
+                continue; // Found DIV exprCast, continue loop
+            } else {
+                 tkerr("invalid expression after multiplicative operator '/'");
                  return false;
             }
         } else {
-            break;
+            break; // No multiplicative operator found, exit loop (epsilon case)
         }
     }
     rule_end("exprMulPrim", true);
@@ -879,16 +906,24 @@ bool exprCast() {
 // exprUnary: (SUB | NOT) exprUnary | exprPostfix
 bool exprUnary() {
     rule_start("exprUnary");
-    Token* start = iTk; 
+    Token* start = iTk;
 
-    bool consumedOp = consume(SUB) || consume(NOT);
-    if (consumedOp) {
-        if (exprUnary()) { 
-             rule_end("exprUnary", true);
-             return true;
+    if (consume(SUB)) {
+        if (exprUnary()) {
+            rule_end("exprUnary", true);
+            return true;
+        } else {
+             tkerr("invalid expression after unary operator '-'");
+             return false;
         }
-         tkerr("invalid expression after unary operator (- or !)");
-         return false; 
+    } else if (consume(NOT)) {
+         if (exprUnary()) {
+            rule_end("exprUnary", true);
+            return true;
+        } else {
+             tkerr("invalid expression after unary operator '!'");
+             return false;
+        }
     }
 
     if (exprPostfix()) {
@@ -896,7 +931,7 @@ bool exprUnary() {
         return true;
     }
 
-    iTk = start; 
+    iTk = start;
     rule_end("exprUnary", false);
     return false;
 }
