@@ -3,7 +3,7 @@ struct Pt{
 	int x;	// size=4, idx=0
 	int y;	// size=4, idx=4
 	};	// size=8
-struct Pt points[10];	// size=80, mem=000001B8E9BD2480
+struct Pt points[10];	// size=80, mem=00000288972A23D0
 double max(double a /*size=8, idx=0*/, double b /*size=8, idx=1*/){
 	}
 int len(char s[] /*size=8, idx=0*/){

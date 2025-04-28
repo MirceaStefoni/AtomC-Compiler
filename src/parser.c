@@ -640,17 +640,20 @@ bool exprOr() {
 // exprOrPrim: OR exprAnd exprOrPrim | epsilon
 bool exprOrPrim() {
     rule_start("exprOrPrim");
-    if (consume(OR)) {
-        if (exprAnd()) {
-            if (exprOrPrim()) { 
-                 rule_end("exprOrPrim", true);
-                 return true;
+    while (true) {
+        
+        if (consume(OR)) {
+            if (exprAnd()) {
+                continue;
+            } else {
+                tkerr("invalid expression after || operator");
+                return false;
             }
+        } else {
+            break;
         }
-        tkerr("invalid expression after || operator");
-        return false; // Error path
     }
-    rule_end("exprOrPrim", true); 
+    rule_end("exprOrPrim", true);
     return true;
 }
 
@@ -672,15 +675,18 @@ bool exprAnd() {
 // exprAndPrim: AND exprEq exprAndPrim | epsilon
 bool exprAndPrim() {
     rule_start("exprAndPrim");
-    if (consume(AND)) {
-        if (exprEq()) {
-            if (exprAndPrim()) {
-                rule_end("exprAndPrim", true);
-                return true;
+    while (true) {
+        
+        if (consume(AND)) {
+            if (exprEq()) {
+                continue;
+            } else {
+                tkerr("invalid expression after && operator");
+                return false;
             }
+        } else {
+            break;
         }
-        tkerr("invalid expression after && operator");
-        return false;
     }
     rule_end("exprAndPrim", true);
     return true;
@@ -704,16 +710,19 @@ bool exprEq() {
 // exprEqPrim: (EQUAL | NOTEQ) exprRel exprEqPrim | epsilon
 bool exprEqPrim() {
     rule_start("exprEqPrim");
-    bool consumedOp = consume(EQUAL) || consume(NOTEQ);
-    if (consumedOp) {
-        if (exprRel()) {
-            if (exprEqPrim()) {
-                 rule_end("exprEqPrim", true);
-                 return true;
+    while (true) {
+        Token *opToken = iTk;
+        bool consumedOp = consume(EQUAL) || consume(NOTEQ);
+        if (consumedOp) {
+            if (exprRel()) {
+                continue;
+            } else {
+                tkerr("invalid expression after equality operator '%s'", opToken->text);
+                return false;
             }
+        } else {
+            break;
         }
-        tkerr("invalid expression after equality operator (== or !=)");
-        return false;
     }
     rule_end("exprEqPrim", true);
     return true;
@@ -737,17 +746,29 @@ bool exprRel() {
 // exprRelPrim: (LESS | LESSEQ | GREATER | GREATEREQ) exprAdd exprRelPrim | epsilon
 bool exprRelPrim() {
     rule_start("exprRelPrim");
-    bool consumedOp = consume(LESS) || consume(LESSEQ) || consume(GREATER) || consume(GREATEREQ);
-    if (consumedOp) {
-        if (exprAdd()) {
-            if (exprRelPrim()) {
-                rule_end("exprRelPrim", true);
-                return true;
-            }
+    while (true) {
+        Token *opToken = iTk; 
+        bool consumedOp = false;
+
+        if (consume(LESS) || consume(LESSEQ) || consume(GREATER) || consume(GREATEREQ)) {
+            consumedOp = true;
         }
-        tkerr("invalid expression after relational operator (<, <=, >, >=)");
-        return false;
+
+        if (consumedOp) {
+            if (exprAdd()) {
+              
+                continue;
+            } else {
+        
+                tkerr("invalid expression after relational operator '%s'", opToken->text);
+                return false; 
+            }
+        } else {
+        
+            break;
+        }
     }
+ 
     rule_end("exprRelPrim", true);
     return true;
 }
@@ -770,16 +791,19 @@ bool exprAdd() {
 // exprAddPrim: (ADD | SUB) exprMul exprAddPrim | epsilon
 bool exprAddPrim() {
     rule_start("exprAddPrim");
-    bool consumedOp = consume(ADD) || consume(SUB);
-    if (consumedOp) {
-        if (exprMul()) {
-            if (exprAddPrim()) {
-                 rule_end("exprAddPrim", true);
-                 return true;
+    while (true) {
+        Token *opToken = iTk;
+        bool consumedOp = consume(ADD) || consume(SUB);
+        if (consumedOp) {
+            if (exprMul()) {
+                continue;
+            } else {
+                 tkerr("invalid expression after additive operator '%s'", opToken->text);
+                 return false;
             }
+        } else {
+            break;
         }
-         tkerr("invalid expression after additive operator (+ or -)");
-         return false;
     }
     rule_end("exprAddPrim", true);
     return true;
@@ -803,16 +827,19 @@ bool exprMul() {
 // exprMulPrim: (MUL | DIV) exprCast exprMulPrim | epsilon
 bool exprMulPrim() {
     rule_start("exprMulPrim");
-    bool consumedOp = consume(MUL) || consume(DIV);
-    if (consumedOp) {
-        if (exprCast()) {
-            if (exprMulPrim()) {
-                rule_end("exprMulPrim", true);
-                return true;
+    while (true) {
+        Token *opToken = iTk;
+        bool consumedOp = consume(MUL) || consume(DIV);
+        if (consumedOp) {
+            if (exprCast()) {
+                continue;
+            } else {
+                 tkerr("invalid expression after multiplicative operator '%s'", opToken->text);
+                 return false;
             }
+        } else {
+            break;
         }
-         tkerr("invalid expression after multiplicative operator (* or /)");
-         return false;
     }
     rule_end("exprMulPrim", true);
     return true;
@@ -894,39 +921,31 @@ bool exprPostfix() {
 bool exprPostfixPrim() {
     rule_start("exprPostfixPrim");
 
-
-    if (consume(LBRACKET)) {
-        if (expr()) { 
-            if (consume(RBRACKET)) {
-                
-                if (exprPostfixPrim()) {
-                     rule_end("exprPostfixPrim", true);
-                     return true;
+    while (true) {
+        if (consume(LBRACKET)) {
+            if (expr()) {
+                if (consume(RBRACKET)) {
+                    // Successfully parsed '[expr]', continue loop
+                    continue;
+                } else {
+                    tkerr("missing ] after array index expression");
+                    return false;
                 }
-             
-                 tkerr("Internal parser error after array access"); return false;
             } else {
-                tkerr("missing ] after array index expression");
-                return false; 
+                tkerr("invalid or missing expression for array index");
+                return false;
+            }
+        } else if (consume(DOT)) {
+            if (consume(ID)) {
+                // Successfully parsed '.ID', continue loop
+                continue;
+            } else {
+                 tkerr("missing identifier after . operator");
+                 return false;
             }
         } else {
-            tkerr("invalid or missing expression for array index");
-            return false; 
-        }
-    }
-
-    if (consume(DOT)) {
-        if (consume(ID)) {
-           
-            
-            if (exprPostfixPrim()) {
-                rule_end("exprPostfixPrim", true);
-                return true;
-            }
-             tkerr("Internal parser error after member access"); return false;
-        } else {
-             tkerr("missing identifier after . operator");
-             return false;
+            // No more postfix operators found, break the loop
+            break;
         }
     }
 
@@ -1012,31 +1031,28 @@ bool unit() {
 
 // Main parse function
 void parse(Token *tokens) {
-    initParserLog(); // Initialize optional logging
-    initAdLog();     // Initialize domain analysis logging
+    initParserLog(); 
+    initAdLog();    
     iTk = tokens;
 
-    // --- Domain Analysis Setup ---
-    pushDomain(); // Create the global domain
+  
+    pushDomain();
 
-    // Call the top-level rule
     if (!unit()) {
-        // Error should have been reported by tkerr, but add a general failure message
+  
         fprintf(stderr, "Syntax analysis failed.\n");
-        // Optionally log the failure
-        // if (parser_log_fp) fprintf(parser_log_fp, "Syntax analysis failed at top level.\n");
-        dropDomain(); // Clean up global domain even on failure
-        closeAdLog();     // Close domain analysis log on failure
+
+        dropDomain(); 
+        closeAdLog();   
         closeParserLog();
         exit(EXIT_FAILURE); // Exit on failure
     }
 
-    // --- Domain Analysis Teardown & Output ---
     // Analysis was successful if unit() returned true
-    printf("Domain analysis completed successfully.\n"); // This stays on stdout
-    showDomain(symTable, "global"); // This now writes to ad_log_fp (or stdout)
-    dropDomain(); // Clean up the global domain
+    printf("Domain analysis completed successfully.\n"); 
+    showDomain(symTable, "global"); 
+    dropDomain();
 
-    closeAdLog();     // Close domain analysis log
-    closeParserLog(); // Close optional logging
+    closeAdLog();     
+    closeParserLog(); 
 }

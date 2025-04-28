@@ -181,12 +181,10 @@ consume(ADD) => found RPAR
 consume(SUB) => found RPAR
 Exit exprAddPrim (OK)
 Exit exprAdd (OK)
-Enter exprRelPrim
 consume(LESS) => found RPAR
 consume(LESSEQ) => found RPAR
 consume(GREATER) => found RPAR
 consume(GREATEREQ) => found RPAR
-Exit exprRelPrim (OK)
 Exit exprRelPrim (OK)
 Exit exprRel (OK)
 Enter exprEqPrim
@@ -283,12 +281,10 @@ consume(ADD) => found RPAR
 consume(SUB) => found RPAR
 Exit exprAddPrim (OK)
 Exit exprAdd (OK)
-Enter exprRelPrim
 consume(LESS) => found RPAR
 consume(LESSEQ) => found RPAR
 consume(GREATER) => found RPAR
 consume(GREATEREQ) => found RPAR
-Exit exprRelPrim (OK)
 Exit exprRelPrim (OK)
 Exit exprRel (OK)
 Enter exprEqPrim
@@ -1068,10 +1064,8 @@ Exit exprOr (OK)
 Exit exprAssign (OK)
 Exit expr (OK)
 consume(RBRACKET) => consumed
-Enter exprPostfixPrim
 consume(LBRACKET) => found RPAR
 consume(DOT) => found RPAR
-Exit exprPostfixPrim (OK)
 Exit exprPostfixPrim (OK)
 Exit exprPostfix (OK)
 Exit exprUnary (OK)
@@ -1242,10 +1236,8 @@ Exit exprOr (OK)
 Exit exprAssign (OK)
 Exit expr (OK)
 consume(RBRACKET) => consumed
-Enter exprPostfixPrim
 consume(LBRACKET) => found RPAR
 consume(DOT) => found RPAR
-Exit exprPostfixPrim (OK)
 Exit exprPostfixPrim (OK)
 Exit exprPostfix (OK)
 Exit exprUnary (OK)
@@ -1394,10 +1386,8 @@ Exit exprOr (OK)
 Exit exprAssign (OK)
 Exit expr (OK)
 consume(RBRACKET) => consumed
-Enter exprPostfixPrim
 consume(LBRACKET) => found RPAR
 consume(DOT) => found RPAR
-Exit exprPostfixPrim (OK)
 Exit exprPostfixPrim (OK)
 Exit exprPostfix (OK)
 Exit exprUnary (OK)
@@ -1566,10 +1556,8 @@ consume(MUL) => found SEMICOLON
 consume(DIV) => found SEMICOLON
 Exit exprMulPrim (OK)
 Exit exprMul (OK)
-Enter exprAddPrim
 consume(ADD) => found SEMICOLON
 consume(SUB) => found SEMICOLON
-Exit exprAddPrim (OK)
 Exit exprAddPrim (OK)
 Exit exprAdd (OK)
 Enter exprRelPrim
@@ -1660,10 +1648,8 @@ consume(MUL) => found SEMICOLON
 consume(DIV) => found SEMICOLON
 Exit exprMulPrim (OK)
 Exit exprMul (OK)
-Enter exprAddPrim
 consume(ADD) => found SEMICOLON
 consume(SUB) => found SEMICOLON
-Exit exprAddPrim (OK)
 Exit exprAddPrim (OK)
 Exit exprAdd (OK)
 Enter exprRelPrim
@@ -2259,10 +2245,8 @@ consume(GREATER) => found RPAR
 consume(GREATEREQ) => found RPAR
 Exit exprRelPrim (OK)
 Exit exprRel (OK)
-Enter exprEqPrim
 consume(EQUAL) => found RPAR
 consume(NOTEQ) => found RPAR
-Exit exprEqPrim (OK)
 Exit exprEqPrim (OK)
 Exit exprEq (OK)
 Enter exprAndPrim
@@ -2368,10 +2352,8 @@ consume(GREATER) => found RPAR
 consume(GREATEREQ) => found RPAR
 Exit exprRelPrim (OK)
 Exit exprRel (OK)
-Enter exprEqPrim
 consume(EQUAL) => found RPAR
 consume(NOTEQ) => found RPAR
-Exit exprEqPrim (OK)
 Exit exprEqPrim (OK)
 Exit exprEq (OK)
 Enter exprAndPrim
@@ -3040,10 +3022,8 @@ Exit exprPostfixPrim (OK)
 Exit exprPostfix (OK)
 Exit exprUnary (OK)
 Exit exprCast (OK)
-Enter exprMulPrim
 consume(MUL) => found SEMICOLON
 consume(DIV) => found SEMICOLON
-Exit exprMulPrim (OK)
 Exit exprMulPrim (OK)
 Exit exprMul (OK)
 Enter exprAddPrim
@@ -3129,10 +3109,8 @@ Exit exprPostfixPrim (OK)
 Exit exprPostfix (OK)
 Exit exprUnary (OK)
 Exit exprCast (OK)
-Enter exprMulPrim
 consume(MUL) => found SEMICOLON
 consume(DIV) => found SEMICOLON
-Exit exprMulPrim (OK)
 Exit exprMulPrim (OK)
 Exit exprMul (OK)
 Enter exprAddPrim
