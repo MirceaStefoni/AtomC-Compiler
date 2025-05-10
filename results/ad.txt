@@ -1,15 +1,12 @@
 // domain: global
-struct Pt{
-	int x;	// size=4, idx=0
-	int y;	// size=4, idx=4
-	};	// size=8
-struct Pt points[10];	// size=80, mem=0000029E07DF25C0
-double max(double a /*size=8, idx=0*/, double b /*size=8, idx=1*/){
+struct S{
+	int n;	// size=4, idx=0
+	char text[16];	// size=16, idx=4
+	};	// size=20
+struct S a;	// size=20, mem=0000015DF4C001D0
+struct S v[10];	// size=200, mem=0000015DF4C01DD0
+void f(char text[] /*size=8, idx=0*/, int i /*size=4, idx=1*/, char ch /*size=1, idx=2*/){
 	}
-int len(char s[] /*size=8, idx=0*/){
-	int i;	// size=4, idx=0
-	}
-void main(){
-	int i;	// size=4, idx=0
+int h(int x /*size=4, idx=0*/, int y /*size=4, idx=1*/){
 	}
 

@@ -3,6 +3,8 @@
 
 #include "lexer.h"
 #include <stdbool.h>
+#include "ad.h"
+#include "at.h"
 
 extern Token *iTk;    
 extern Token *consumedTk; 
@@ -21,26 +23,26 @@ bool arrayDecl();
 bool fnDef();
 bool fnParam();
 bool stm();
-bool stmCompound(bool newDomain);
-bool expr();
-bool exprAssign();
-bool exprOr();
-bool exprOrPrim();
-bool exprAnd();
-bool exprAndPrim();
-bool exprEq();
-bool exprEqPrim();
-bool exprRel();
-bool exprRelPrim();
-bool exprAdd();
-bool exprAddPrim();
-bool exprMul();
-bool exprMulPrim();
-bool exprCast();
-bool exprUnary();
-bool exprPostfix();
-bool exprPostfixPrim();
-bool exprPrimary();
+bool stmCompound(bool newDomain); // newDomain parameter is for syntactic scope, owner handles semantic
+bool expr(Ret *r);
+bool exprAssign(Ret *r);
+bool exprOr(Ret *r);
+bool exprOrPrim(Ret *r);
+bool exprAnd(Ret *r);
+bool exprAndPrim(Ret *r); 
+bool exprEq(Ret *r);
+bool exprEqPrim(Ret *r); 
+bool exprRel(Ret *r);
+bool exprRelPrim(Ret *r);
+bool exprAdd(Ret *r);
+bool exprAddPrim(Ret *r); 
+bool exprMul(Ret *r);
+bool exprMulPrim(Ret *r); 
+bool exprCast(Ret *r);
+bool exprUnary(Ret *r);
+bool exprPostfix(Ret *r);
+bool exprPostfixPrim(Ret *r); 
+bool exprPrimary(Ret *r);
 
 
 void parse(Token *tokens);
