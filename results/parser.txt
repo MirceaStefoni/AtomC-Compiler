@@ -15,16 +15,12 @@ consume(SEMICOLON) => consumed
 Exit varDef (OK)
 Enter varDef
 Enter typeBase
-consume(TYPE_INT) => found TYPE_CHAR
-consume(TYPE_DOUBLE) => found TYPE_CHAR
-consume(TYPE_CHAR) => consumed
+consume(TYPE_INT) => consumed
 Exit typeBase (OK)
 consume(ID) => consumed
 Enter arrayDecl
-consume(LBRACKET) => consumed
-consume(INT) => consumed
-consume(RBRACKET) => consumed
-Exit arrayDecl (OK)
+consume(LBRACKET) => found SEMICOLON
+Exit arrayDecl (FAIL)
 consume(SEMICOLON) => consumed
 Exit varDef (OK)
 Enter varDef
@@ -41,24 +37,11 @@ Exit structDef (OK)
 Enter structDef
 consume(STRUCT) => consumed
 consume(ID) => consumed
-Exit structDef (FAIL)
-Enter fnDef
-Enter typeBase
-consume(TYPE_INT) => found STRUCT
-consume(TYPE_DOUBLE) => found STRUCT
-consume(TYPE_CHAR) => found STRUCT
-consume(STRUCT) => consumed
-consume(ID) => consumed
-Exit typeBase (OK)
-consume(ID) => consumed
-Exit fnDef (FAIL)
+consume(LACC) => consumed
 Enter varDef
 Enter typeBase
-consume(TYPE_INT) => found STRUCT
-consume(TYPE_DOUBLE) => found STRUCT
-consume(TYPE_CHAR) => found STRUCT
-consume(STRUCT) => consumed
-consume(ID) => consumed
+consume(TYPE_INT) => found TYPE_DOUBLE
+consume(TYPE_DOUBLE) => consumed
 Exit typeBase (OK)
 consume(ID) => consumed
 Enter arrayDecl
@@ -66,36 +49,29 @@ consume(LBRACKET) => found SEMICOLON
 Exit arrayDecl (FAIL)
 consume(SEMICOLON) => consumed
 Exit varDef (OK)
-Enter structDef
-consume(STRUCT) => consumed
-consume(ID) => consumed
-Exit structDef (FAIL)
-Enter fnDef
-Enter typeBase
-consume(TYPE_INT) => found STRUCT
-consume(TYPE_DOUBLE) => found STRUCT
-consume(TYPE_CHAR) => found STRUCT
-consume(STRUCT) => consumed
-consume(ID) => consumed
-Exit typeBase (OK)
-consume(ID) => consumed
-Exit fnDef (FAIL)
 Enter varDef
 Enter typeBase
-consume(TYPE_INT) => found STRUCT
-consume(TYPE_DOUBLE) => found STRUCT
-consume(TYPE_CHAR) => found STRUCT
-consume(STRUCT) => consumed
-consume(ID) => consumed
+consume(TYPE_INT) => found TYPE_CHAR
+consume(TYPE_DOUBLE) => found TYPE_CHAR
+consume(TYPE_CHAR) => consumed
 Exit typeBase (OK)
 consume(ID) => consumed
 Enter arrayDecl
-consume(LBRACKET) => consumed
-consume(INT) => consumed
-consume(RBRACKET) => consumed
-Exit arrayDecl (OK)
+consume(LBRACKET) => found SEMICOLON
+Exit arrayDecl (FAIL)
 consume(SEMICOLON) => consumed
 Exit varDef (OK)
+Enter varDef
+Enter typeBase
+consume(TYPE_INT) => found RACC
+consume(TYPE_DOUBLE) => found RACC
+consume(TYPE_CHAR) => found RACC
+consume(STRUCT) => found RACC
+Exit typeBase (FAIL)
+Exit varDef (FAIL)
+consume(RACC) => consumed
+consume(SEMICOLON) => consumed
+Exit structDef (OK)
 Enter structDef
 consume(STRUCT) => found VOID
 Exit structDef (FAIL)
@@ -111,87 +87,42 @@ consume(ID) => consumed
 consume(LPAR) => consumed
 Enter fnParam
 Enter typeBase
-consume(TYPE_INT) => found TYPE_CHAR
-consume(TYPE_DOUBLE) => found TYPE_CHAR
-consume(TYPE_CHAR) => consumed
-Exit typeBase (OK)
-consume(ID) => consumed
-Enter arrayDecl
-consume(LBRACKET) => consumed
-consume(INT) => found RBRACKET
-consume(RBRACKET) => consumed
-Exit arrayDecl (OK)
-Exit fnParam (OK)
-consume(COMMA) => consumed
-Enter fnParam
-Enter typeBase
-consume(TYPE_INT) => consumed
-Exit typeBase (OK)
-consume(ID) => consumed
-Enter arrayDecl
-consume(LBRACKET) => found COMMA
-Exit arrayDecl (FAIL)
-Exit fnParam (OK)
-consume(COMMA) => consumed
-Enter fnParam
-Enter typeBase
-consume(TYPE_INT) => found TYPE_CHAR
-consume(TYPE_DOUBLE) => found TYPE_CHAR
-consume(TYPE_CHAR) => consumed
-Exit typeBase (OK)
-consume(ID) => consumed
-Enter arrayDecl
-consume(LBRACKET) => found RPAR
-Exit arrayDecl (FAIL)
-Exit fnParam (OK)
-consume(COMMA) => found RPAR
+consume(TYPE_INT) => found RPAR
+consume(TYPE_DOUBLE) => found RPAR
+consume(TYPE_CHAR) => found RPAR
+consume(STRUCT) => found RPAR
+Exit typeBase (FAIL)
+Exit fnParam (FAIL)
 consume(RPAR) => consumed
 Enter stmCompound
 consume(LACC) => consumed
 Enter varDef
 Enter typeBase
-consume(TYPE_INT) => found ID
-consume(TYPE_DOUBLE) => found ID
-consume(TYPE_CHAR) => found ID
-consume(STRUCT) => found ID
+consume(TYPE_INT) => found RACC
+consume(TYPE_DOUBLE) => found RACC
+consume(TYPE_CHAR) => found RACC
+consume(STRUCT) => found RACC
 Exit typeBase (FAIL)
 Exit varDef (FAIL)
 Enter stm
 Enter stmCompound
-consume(LACC) => found ID
+consume(LACC) => found RACC
 Exit stmCompound (FAIL)
-consume(IF) => found ID
-consume(WHILE) => found ID
-consume(RETURN) => found ID
+consume(IF) => found RACC
+consume(WHILE) => found RACC
+consume(RETURN) => found RACC
 Enter expr
 Enter exprAssign
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
+consume(SUB) => found RACC
+consume(NOT) => found RACC
 Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found LBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found RBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RBRACKET
-consume(DOT) => found RBRACKET
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found RBRACKET
+consume(ID) => found RACC
+consume(INT) => found RACC
+consume(DOUBLE) => found RACC
+consume(CHAR) => found RACC
+consume(STRING) => found RACC
+consume(LPAR) => found RACC
+Exit exprPostfix (FAIL)
 Enter exprOr
 Enter exprAnd
 Enter exprEq
@@ -199,78 +130,78 @@ Enter exprRel
 Enter exprAdd
 Enter exprMul
 Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
+consume(LPAR) => found RACC
+consume(SUB) => found RACC
+consume(NOT) => found RACC
 Enter exprPostfix
-Enter exprPrimary
+consume(ID) => found RACC
+consume(INT) => found RACC
+consume(DOUBLE) => found RACC
+consume(CHAR) => found RACC
+consume(STRING) => found RACC
+consume(LPAR) => found RACC
+Exit exprPostfix (FAIL)
+Exit exprCast (FAIL)
+Exit exprMul (FAIL)
+Exit exprAdd (FAIL)
+Exit exprRel (FAIL)
+Exit exprEq (FAIL)
+Exit exprAnd (FAIL)
+Exit exprOr (FAIL)
+Exit exprAssign (FAIL)
+Exit expr (FAIL)
+consume(SEMICOLON) => found RACC
+Exit stm (FAIL)
+consume(RACC) => consumed
+Exit stmCompound (OK)
+Exit fnDef (OK)
+Enter structDef
+consume(STRUCT) => found TYPE_INT
+Exit structDef (FAIL)
+Enter fnDef
+Enter typeBase
+consume(TYPE_INT) => consumed
+Exit typeBase (OK)
 consume(ID) => consumed
-consume(LPAR) => found RBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RBRACKET
-consume(DOT) => found RBRACKET
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found RBRACKET
-consume(DIV) => found RBRACKET
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found RBRACKET
-consume(SUB) => found RBRACKET
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found RBRACKET
-consume(LESSEQ) => found RBRACKET
-consume(GREATER) => found RBRACKET
-consume(GREATEREQ) => found RBRACKET
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found RBRACKET
-consume(NOTEQ) => found RBRACKET
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found RBRACKET
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found RBRACKET
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(RBRACKET) => consumed
-Enter exprPostfixPrim
-consume(LBRACKET) => found ASSIGN
-consume(DOT) => found ASSIGN
-Exit exprPostfixPrim (OK)
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => consumed
+consume(LPAR) => consumed
+Enter fnParam
+Enter typeBase
+consume(TYPE_INT) => found RPAR
+consume(TYPE_DOUBLE) => found RPAR
+consume(TYPE_CHAR) => found RPAR
+consume(STRUCT) => found RPAR
+Exit typeBase (FAIL)
+Exit fnParam (FAIL)
+consume(RPAR) => consumed
+Enter stmCompound
+consume(LACC) => consumed
+Enter varDef
+Enter typeBase
+consume(TYPE_INT) => found RETURN
+consume(TYPE_DOUBLE) => found RETURN
+consume(TYPE_CHAR) => found RETURN
+consume(STRUCT) => found RETURN
+Exit typeBase (FAIL)
+Exit varDef (FAIL)
+Enter stm
+Enter stmCompound
+consume(LACC) => found RETURN
+Exit stmCompound (FAIL)
+consume(IF) => found RETURN
+consume(WHILE) => found RETURN
+consume(RETURN) => consumed
+Enter expr
 Enter exprAssign
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
+consume(SUB) => found INT
+consume(NOT) => found INT
 Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found SEMICOLON
-Exit exprPrimary (OK)
+consume(ID) => found INT
+consume(INT) => consumed
 Enter exprPostfixPrim
 consume(LBRACKET) => found SEMICOLON
 consume(DOT) => found SEMICOLON
 Exit exprPostfixPrim (OK)
 Exit exprPostfix (OK)
-Exit exprUnary (OK)
 consume(ASSIGN) => found SEMICOLON
 Enter exprOr
 Enter exprAnd
@@ -279,21 +210,17 @@ Enter exprRel
 Enter exprAdd
 Enter exprMul
 Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
+consume(LPAR) => found INT
+consume(SUB) => found INT
+consume(NOT) => found INT
 Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found SEMICOLON
-Exit exprPrimary (OK)
+consume(ID) => found INT
+consume(INT) => consumed
 Enter exprPostfixPrim
 consume(LBRACKET) => found SEMICOLON
 consume(DOT) => found SEMICOLON
 Exit exprPostfixPrim (OK)
 Exit exprPostfix (OK)
-Exit exprUnary (OK)
 Exit exprCast (OK)
 Enter exprMulPrim
 consume(MUL) => found SEMICOLON
@@ -317,15 +244,10 @@ consume(EQUAL) => found SEMICOLON
 consume(NOTEQ) => found SEMICOLON
 Exit exprEqPrim (OK)
 Exit exprEq (OK)
-Enter exprAndPrim
 consume(AND) => found SEMICOLON
-Exit exprAndPrim (OK)
 Exit exprAnd (OK)
-Enter exprOrPrim
 consume(OR) => found SEMICOLON
-Exit exprOrPrim (OK)
 Exit exprOr (OK)
-Exit exprAssign (OK)
 Exit exprAssign (OK)
 Exit expr (OK)
 consume(SEMICOLON) => consumed
@@ -347,20 +269,16 @@ consume(WHILE) => found RACC
 consume(RETURN) => found RACC
 Enter expr
 Enter exprAssign
-Enter exprUnary
 consume(SUB) => found RACC
 consume(NOT) => found RACC
 Enter exprPostfix
-Enter exprPrimary
 consume(ID) => found RACC
 consume(INT) => found RACC
 consume(DOUBLE) => found RACC
 consume(CHAR) => found RACC
 consume(STRING) => found RACC
 consume(LPAR) => found RACC
-Exit exprPrimary (FAIL)
 Exit exprPostfix (FAIL)
-Exit exprUnary (FAIL)
 Enter exprOr
 Enter exprAnd
 Enter exprEq
@@ -369,20 +287,336 @@ Enter exprAdd
 Enter exprMul
 Enter exprCast
 consume(LPAR) => found RACC
-Enter exprUnary
 consume(SUB) => found RACC
 consume(NOT) => found RACC
 Enter exprPostfix
-Enter exprPrimary
 consume(ID) => found RACC
 consume(INT) => found RACC
 consume(DOUBLE) => found RACC
 consume(CHAR) => found RACC
 consume(STRING) => found RACC
 consume(LPAR) => found RACC
-Exit exprPrimary (FAIL)
 Exit exprPostfix (FAIL)
-Exit exprUnary (FAIL)
+Exit exprCast (FAIL)
+Exit exprMul (FAIL)
+Exit exprAdd (FAIL)
+Exit exprRel (FAIL)
+Exit exprEq (FAIL)
+Exit exprAnd (FAIL)
+Exit exprOr (FAIL)
+Exit exprAssign (FAIL)
+Exit expr (FAIL)
+consume(SEMICOLON) => found RACC
+Exit stm (FAIL)
+consume(RACC) => consumed
+Exit stmCompound (OK)
+Exit fnDef (OK)
+Enter structDef
+consume(STRUCT) => found TYPE_INT
+Exit structDef (FAIL)
+Enter fnDef
+Enter typeBase
+consume(TYPE_INT) => consumed
+Exit typeBase (OK)
+consume(ID) => consumed
+consume(LPAR) => consumed
+Enter fnParam
+Enter typeBase
+consume(TYPE_INT) => consumed
+Exit typeBase (OK)
+consume(ID) => consumed
+Enter arrayDecl
+consume(LBRACKET) => found RPAR
+Exit arrayDecl (FAIL)
+Exit fnParam (OK)
+consume(COMMA) => found RPAR
+consume(RPAR) => consumed
+Enter stmCompound
+consume(LACC) => consumed
+Enter varDef
+Enter typeBase
+consume(TYPE_INT) => found RETURN
+consume(TYPE_DOUBLE) => found RETURN
+consume(TYPE_CHAR) => found RETURN
+consume(STRUCT) => found RETURN
+Exit typeBase (FAIL)
+Exit varDef (FAIL)
+Enter stm
+Enter stmCompound
+consume(LACC) => found RETURN
+Exit stmCompound (FAIL)
+consume(IF) => found RETURN
+consume(WHILE) => found RETURN
+consume(RETURN) => consumed
+Enter expr
+Enter exprAssign
+consume(SUB) => found ID
+consume(NOT) => found ID
+Enter exprPostfix
+consume(ID) => consumed
+consume(LPAR) => found SEMICOLON
+Enter exprPostfixPrim
+consume(LBRACKET) => found SEMICOLON
+consume(DOT) => found SEMICOLON
+Exit exprPostfixPrim (OK)
+Exit exprPostfix (OK)
+consume(ASSIGN) => found SEMICOLON
+Enter exprOr
+Enter exprAnd
+Enter exprEq
+Enter exprRel
+Enter exprAdd
+Enter exprMul
+Enter exprCast
+consume(LPAR) => found ID
+consume(SUB) => found ID
+consume(NOT) => found ID
+Enter exprPostfix
+consume(ID) => consumed
+consume(LPAR) => found SEMICOLON
+Enter exprPostfixPrim
+consume(LBRACKET) => found SEMICOLON
+consume(DOT) => found SEMICOLON
+Exit exprPostfixPrim (OK)
+Exit exprPostfix (OK)
+Exit exprCast (OK)
+Enter exprMulPrim
+consume(MUL) => found SEMICOLON
+consume(DIV) => found SEMICOLON
+Exit exprMulPrim (OK)
+Exit exprMul (OK)
+Enter exprAddPrim
+consume(ADD) => found SEMICOLON
+consume(SUB) => found SEMICOLON
+Exit exprAddPrim (OK)
+Exit exprAdd (OK)
+Enter exprRelPrim
+consume(LESS) => found SEMICOLON
+consume(LESSEQ) => found SEMICOLON
+consume(GREATER) => found SEMICOLON
+consume(GREATEREQ) => found SEMICOLON
+Exit exprRelPrim (OK)
+Exit exprRel (OK)
+Enter exprEqPrim
+consume(EQUAL) => found SEMICOLON
+consume(NOTEQ) => found SEMICOLON
+Exit exprEqPrim (OK)
+Exit exprEq (OK)
+consume(AND) => found SEMICOLON
+Exit exprAnd (OK)
+consume(OR) => found SEMICOLON
+Exit exprOr (OK)
+Exit exprAssign (OK)
+Exit expr (OK)
+consume(SEMICOLON) => consumed
+Exit stm (OK)
+Enter varDef
+Enter typeBase
+consume(TYPE_INT) => found RACC
+consume(TYPE_DOUBLE) => found RACC
+consume(TYPE_CHAR) => found RACC
+consume(STRUCT) => found RACC
+Exit typeBase (FAIL)
+Exit varDef (FAIL)
+Enter stm
+Enter stmCompound
+consume(LACC) => found RACC
+Exit stmCompound (FAIL)
+consume(IF) => found RACC
+consume(WHILE) => found RACC
+consume(RETURN) => found RACC
+Enter expr
+Enter exprAssign
+consume(SUB) => found RACC
+consume(NOT) => found RACC
+Enter exprPostfix
+consume(ID) => found RACC
+consume(INT) => found RACC
+consume(DOUBLE) => found RACC
+consume(CHAR) => found RACC
+consume(STRING) => found RACC
+consume(LPAR) => found RACC
+Exit exprPostfix (FAIL)
+Enter exprOr
+Enter exprAnd
+Enter exprEq
+Enter exprRel
+Enter exprAdd
+Enter exprMul
+Enter exprCast
+consume(LPAR) => found RACC
+consume(SUB) => found RACC
+consume(NOT) => found RACC
+Enter exprPostfix
+consume(ID) => found RACC
+consume(INT) => found RACC
+consume(DOUBLE) => found RACC
+consume(CHAR) => found RACC
+consume(STRING) => found RACC
+consume(LPAR) => found RACC
+Exit exprPostfix (FAIL)
+Exit exprCast (FAIL)
+Exit exprMul (FAIL)
+Exit exprAdd (FAIL)
+Exit exprRel (FAIL)
+Exit exprEq (FAIL)
+Exit exprAnd (FAIL)
+Exit exprOr (FAIL)
+Exit exprAssign (FAIL)
+Exit expr (FAIL)
+consume(SEMICOLON) => found RACC
+Exit stm (FAIL)
+consume(RACC) => consumed
+Exit stmCompound (OK)
+Exit fnDef (OK)
+Enter structDef
+consume(STRUCT) => found TYPE_CHAR
+Exit structDef (FAIL)
+Enter fnDef
+Enter typeBase
+consume(TYPE_INT) => found TYPE_CHAR
+consume(TYPE_DOUBLE) => found TYPE_CHAR
+consume(TYPE_CHAR) => consumed
+Exit typeBase (OK)
+consume(ID) => consumed
+consume(LPAR) => consumed
+Enter fnParam
+Enter typeBase
+consume(TYPE_INT) => found TYPE_CHAR
+consume(TYPE_DOUBLE) => found TYPE_CHAR
+consume(TYPE_CHAR) => consumed
+Exit typeBase (OK)
+consume(ID) => consumed
+Enter arrayDecl
+consume(LBRACKET) => found RPAR
+Exit arrayDecl (FAIL)
+Exit fnParam (OK)
+consume(COMMA) => found RPAR
+consume(RPAR) => consumed
+Enter stmCompound
+consume(LACC) => consumed
+Enter varDef
+Enter typeBase
+consume(TYPE_INT) => found RETURN
+consume(TYPE_DOUBLE) => found RETURN
+consume(TYPE_CHAR) => found RETURN
+consume(STRUCT) => found RETURN
+Exit typeBase (FAIL)
+Exit varDef (FAIL)
+Enter stm
+Enter stmCompound
+consume(LACC) => found RETURN
+Exit stmCompound (FAIL)
+consume(IF) => found RETURN
+consume(WHILE) => found RETURN
+consume(RETURN) => consumed
+Enter expr
+Enter exprAssign
+consume(SUB) => found ID
+consume(NOT) => found ID
+Enter exprPostfix
+consume(ID) => consumed
+consume(LPAR) => found SEMICOLON
+Enter exprPostfixPrim
+consume(LBRACKET) => found SEMICOLON
+consume(DOT) => found SEMICOLON
+Exit exprPostfixPrim (OK)
+Exit exprPostfix (OK)
+consume(ASSIGN) => found SEMICOLON
+Enter exprOr
+Enter exprAnd
+Enter exprEq
+Enter exprRel
+Enter exprAdd
+Enter exprMul
+Enter exprCast
+consume(LPAR) => found ID
+consume(SUB) => found ID
+consume(NOT) => found ID
+Enter exprPostfix
+consume(ID) => consumed
+consume(LPAR) => found SEMICOLON
+Enter exprPostfixPrim
+consume(LBRACKET) => found SEMICOLON
+consume(DOT) => found SEMICOLON
+Exit exprPostfixPrim (OK)
+Exit exprPostfix (OK)
+Exit exprCast (OK)
+Enter exprMulPrim
+consume(MUL) => found SEMICOLON
+consume(DIV) => found SEMICOLON
+Exit exprMulPrim (OK)
+Exit exprMul (OK)
+Enter exprAddPrim
+consume(ADD) => found SEMICOLON
+consume(SUB) => found SEMICOLON
+Exit exprAddPrim (OK)
+Exit exprAdd (OK)
+Enter exprRelPrim
+consume(LESS) => found SEMICOLON
+consume(LESSEQ) => found SEMICOLON
+consume(GREATER) => found SEMICOLON
+consume(GREATEREQ) => found SEMICOLON
+Exit exprRelPrim (OK)
+Exit exprRel (OK)
+Enter exprEqPrim
+consume(EQUAL) => found SEMICOLON
+consume(NOTEQ) => found SEMICOLON
+Exit exprEqPrim (OK)
+Exit exprEq (OK)
+consume(AND) => found SEMICOLON
+Exit exprAnd (OK)
+consume(OR) => found SEMICOLON
+Exit exprOr (OK)
+Exit exprAssign (OK)
+Exit expr (OK)
+consume(SEMICOLON) => consumed
+Exit stm (OK)
+Enter varDef
+Enter typeBase
+consume(TYPE_INT) => found RACC
+consume(TYPE_DOUBLE) => found RACC
+consume(TYPE_CHAR) => found RACC
+consume(STRUCT) => found RACC
+Exit typeBase (FAIL)
+Exit varDef (FAIL)
+Enter stm
+Enter stmCompound
+consume(LACC) => found RACC
+Exit stmCompound (FAIL)
+consume(IF) => found RACC
+consume(WHILE) => found RACC
+consume(RETURN) => found RACC
+Enter expr
+Enter exprAssign
+consume(SUB) => found RACC
+consume(NOT) => found RACC
+Enter exprPostfix
+consume(ID) => found RACC
+consume(INT) => found RACC
+consume(DOUBLE) => found RACC
+consume(CHAR) => found RACC
+consume(STRING) => found RACC
+consume(LPAR) => found RACC
+Exit exprPostfix (FAIL)
+Enter exprOr
+Enter exprAnd
+Enter exprEq
+Enter exprRel
+Enter exprAdd
+Enter exprMul
+Enter exprCast
+consume(LPAR) => found RACC
+consume(SUB) => found RACC
+consume(NOT) => found RACC
+Enter exprPostfix
+consume(ID) => found RACC
+consume(INT) => found RACC
+consume(DOUBLE) => found RACC
+consume(CHAR) => found RACC
+consume(STRING) => found RACC
+consume(LPAR) => found RACC
+Exit exprPostfix (FAIL)
 Exit exprCast (FAIL)
 Exit exprMul (FAIL)
 Exit exprAdd (FAIL)
@@ -418,7 +652,9 @@ Exit fnParam (OK)
 consume(COMMA) => consumed
 Enter fnParam
 Enter typeBase
-consume(TYPE_INT) => consumed
+consume(TYPE_INT) => found TYPE_CHAR
+consume(TYPE_DOUBLE) => found TYPE_CHAR
+consume(TYPE_CHAR) => consumed
 Exit typeBase (OK)
 consume(ID) => consumed
 Enter arrayDecl
@@ -431,35 +667,32 @@ Enter stmCompound
 consume(LACC) => consumed
 Enter varDef
 Enter typeBase
-consume(TYPE_INT) => found IF
-consume(TYPE_DOUBLE) => found IF
-consume(TYPE_CHAR) => found IF
-consume(STRUCT) => found IF
+consume(TYPE_INT) => found RETURN
+consume(TYPE_DOUBLE) => found RETURN
+consume(TYPE_CHAR) => found RETURN
+consume(STRUCT) => found RETURN
 Exit typeBase (FAIL)
 Exit varDef (FAIL)
 Enter stm
 Enter stmCompound
-consume(LACC) => found IF
+consume(LACC) => found RETURN
 Exit stmCompound (FAIL)
-consume(IF) => consumed
-consume(LPAR) => consumed
+consume(IF) => found RETURN
+consume(WHILE) => found RETURN
+consume(RETURN) => consumed
 Enter expr
 Enter exprAssign
-Enter exprUnary
 consume(SUB) => found ID
 consume(NOT) => found ID
 Enter exprPostfix
-Enter exprPrimary
 consume(ID) => consumed
-consume(LPAR) => found GREATER
-Exit exprPrimary (OK)
+consume(LPAR) => found ADD
 Enter exprPostfixPrim
-consume(LBRACKET) => found GREATER
-consume(DOT) => found GREATER
+consume(LBRACKET) => found ADD
+consume(DOT) => found ADD
 Exit exprPostfixPrim (OK)
 Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found GREATER
+consume(ASSIGN) => found ADD
 Enter exprOr
 Enter exprAnd
 Enter exprEq
@@ -468,169 +701,337 @@ Enter exprAdd
 Enter exprMul
 Enter exprCast
 consume(LPAR) => found ID
-Enter exprUnary
 consume(SUB) => found ID
 consume(NOT) => found ID
 Enter exprPostfix
-Enter exprPrimary
 consume(ID) => consumed
-consume(LPAR) => found GREATER
-Exit exprPrimary (OK)
+consume(LPAR) => found ADD
 Enter exprPostfixPrim
-consume(LBRACKET) => found GREATER
-consume(DOT) => found GREATER
+consume(LBRACKET) => found ADD
+consume(DOT) => found ADD
 Exit exprPostfixPrim (OK)
 Exit exprPostfix (OK)
-Exit exprUnary (OK)
 Exit exprCast (OK)
 Enter exprMulPrim
-consume(MUL) => found GREATER
-consume(DIV) => found GREATER
+consume(MUL) => found ADD
+consume(DIV) => found ADD
 Exit exprMulPrim (OK)
 Exit exprMul (OK)
 Enter exprAddPrim
-consume(ADD) => found GREATER
-consume(SUB) => found GREATER
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found GREATER
-consume(LESSEQ) => found GREATER
-consume(GREATER) => consumed
-Enter exprAdd
+consume(ADD) => consumed
 Enter exprMul
 Enter exprCast
-consume(LPAR) => found INT
-Enter exprUnary
-consume(SUB) => found INT
-consume(NOT) => found INT
+consume(LPAR) => found ID
+consume(SUB) => found ID
+consume(NOT) => found ID
 Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found INT
-consume(INT) => consumed
-Exit exprPrimary (OK)
+consume(ID) => consumed
+consume(LPAR) => found SEMICOLON
 Enter exprPostfixPrim
-consume(LBRACKET) => found AND
-consume(DOT) => found AND
+consume(LBRACKET) => found SEMICOLON
+consume(DOT) => found SEMICOLON
 Exit exprPostfixPrim (OK)
 Exit exprPostfix (OK)
-Exit exprUnary (OK)
 Exit exprCast (OK)
 Enter exprMulPrim
-consume(MUL) => found AND
-consume(DIV) => found AND
+consume(MUL) => found SEMICOLON
+consume(DIV) => found SEMICOLON
 Exit exprMulPrim (OK)
 Exit exprMul (OK)
 Enter exprAddPrim
-consume(ADD) => found AND
-consume(SUB) => found AND
+consume(ADD) => found SEMICOLON
+consume(SUB) => found SEMICOLON
+Exit exprAddPrim (OK)
 Exit exprAddPrim (OK)
 Exit exprAdd (OK)
 Enter exprRelPrim
-consume(LESS) => found AND
-consume(LESSEQ) => found AND
-consume(GREATER) => found AND
-consume(GREATEREQ) => found AND
-Exit exprRelPrim (OK)
+consume(LESS) => found SEMICOLON
+consume(LESSEQ) => found SEMICOLON
+consume(GREATER) => found SEMICOLON
+consume(GREATEREQ) => found SEMICOLON
 Exit exprRelPrim (OK)
 Exit exprRel (OK)
 Enter exprEqPrim
-consume(EQUAL) => found AND
-consume(NOTEQ) => found AND
+consume(EQUAL) => found SEMICOLON
+consume(NOTEQ) => found SEMICOLON
 Exit exprEqPrim (OK)
 Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => consumed
+consume(AND) => found SEMICOLON
+Exit exprAnd (OK)
+consume(OR) => found SEMICOLON
+Exit exprOr (OK)
+Exit exprAssign (OK)
+Exit expr (OK)
+consume(SEMICOLON) => consumed
+Exit stm (OK)
+Enter varDef
+Enter typeBase
+consume(TYPE_INT) => found RACC
+consume(TYPE_DOUBLE) => found RACC
+consume(TYPE_CHAR) => found RACC
+consume(STRUCT) => found RACC
+Exit typeBase (FAIL)
+Exit varDef (FAIL)
+Enter stm
+Enter stmCompound
+consume(LACC) => found RACC
+Exit stmCompound (FAIL)
+consume(IF) => found RACC
+consume(WHILE) => found RACC
+consume(RETURN) => found RACC
+Enter expr
+Enter exprAssign
+consume(SUB) => found RACC
+consume(NOT) => found RACC
+Enter exprPostfix
+consume(ID) => found RACC
+consume(INT) => found RACC
+consume(DOUBLE) => found RACC
+consume(CHAR) => found RACC
+consume(STRING) => found RACC
+consume(LPAR) => found RACC
+Exit exprPostfix (FAIL)
+Enter exprOr
+Enter exprAnd
+Enter exprEq
+Enter exprRel
+Enter exprAdd
+Enter exprMul
+Enter exprCast
+consume(LPAR) => found RACC
+consume(SUB) => found RACC
+consume(NOT) => found RACC
+Enter exprPostfix
+consume(ID) => found RACC
+consume(INT) => found RACC
+consume(DOUBLE) => found RACC
+consume(CHAR) => found RACC
+consume(STRING) => found RACC
+consume(LPAR) => found RACC
+Exit exprPostfix (FAIL)
+Exit exprCast (FAIL)
+Exit exprMul (FAIL)
+Exit exprAdd (FAIL)
+Exit exprRel (FAIL)
+Exit exprEq (FAIL)
+Exit exprAnd (FAIL)
+Exit exprOr (FAIL)
+Exit exprAssign (FAIL)
+Exit expr (FAIL)
+consume(SEMICOLON) => found RACC
+Exit stm (FAIL)
+consume(RACC) => consumed
+Exit stmCompound (OK)
+Exit fnDef (OK)
+Enter structDef
+consume(STRUCT) => consumed
+consume(ID) => consumed
+Exit structDef (FAIL)
+Enter fnDef
+Enter typeBase
+consume(TYPE_INT) => found STRUCT
+consume(TYPE_DOUBLE) => found STRUCT
+consume(TYPE_CHAR) => found STRUCT
+consume(STRUCT) => consumed
+consume(ID) => consumed
+Exit typeBase (OK)
+consume(ID) => consumed
+consume(LPAR) => consumed
+Enter fnParam
+Enter typeBase
+consume(TYPE_INT) => found RPAR
+consume(TYPE_DOUBLE) => found RPAR
+consume(TYPE_CHAR) => found RPAR
+consume(STRUCT) => found RPAR
+Exit typeBase (FAIL)
+Exit fnParam (FAIL)
+consume(RPAR) => consumed
+Enter stmCompound
+consume(LACC) => consumed
+Enter varDef
+Enter typeBase
+consume(TYPE_INT) => found STRUCT
+consume(TYPE_DOUBLE) => found STRUCT
+consume(TYPE_CHAR) => found STRUCT
+consume(STRUCT) => consumed
+consume(ID) => consumed
+Exit typeBase (OK)
+consume(ID) => consumed
+Enter arrayDecl
+consume(LBRACKET) => found SEMICOLON
+Exit arrayDecl (FAIL)
+consume(SEMICOLON) => consumed
+Exit varDef (OK)
+Enter varDef
+Enter typeBase
+consume(TYPE_INT) => found RETURN
+consume(TYPE_DOUBLE) => found RETURN
+consume(TYPE_CHAR) => found RETURN
+consume(STRUCT) => found RETURN
+Exit typeBase (FAIL)
+Exit varDef (FAIL)
+Enter stm
+Enter stmCompound
+consume(LACC) => found RETURN
+Exit stmCompound (FAIL)
+consume(IF) => found RETURN
+consume(WHILE) => found RETURN
+consume(RETURN) => consumed
+Enter expr
+Enter exprAssign
+consume(SUB) => found ID
+consume(NOT) => found ID
+Enter exprPostfix
+consume(ID) => consumed
+consume(LPAR) => found SEMICOLON
+Enter exprPostfixPrim
+consume(LBRACKET) => found SEMICOLON
+consume(DOT) => found SEMICOLON
+Exit exprPostfixPrim (OK)
+Exit exprPostfix (OK)
+consume(ASSIGN) => found SEMICOLON
+Enter exprOr
+Enter exprAnd
 Enter exprEq
 Enter exprRel
 Enter exprAdd
 Enter exprMul
 Enter exprCast
 consume(LPAR) => found ID
-Enter exprUnary
 consume(SUB) => found ID
 consume(NOT) => found ID
 Enter exprPostfix
-Enter exprPrimary
 consume(ID) => consumed
-consume(LPAR) => found LESS
-Exit exprPrimary (OK)
+consume(LPAR) => found SEMICOLON
 Enter exprPostfixPrim
-consume(LBRACKET) => found LESS
-consume(DOT) => found LESS
+consume(LBRACKET) => found SEMICOLON
+consume(DOT) => found SEMICOLON
 Exit exprPostfixPrim (OK)
 Exit exprPostfix (OK)
-Exit exprUnary (OK)
 Exit exprCast (OK)
 Enter exprMulPrim
-consume(MUL) => found LESS
-consume(DIV) => found LESS
+consume(MUL) => found SEMICOLON
+consume(DIV) => found SEMICOLON
 Exit exprMulPrim (OK)
 Exit exprMul (OK)
 Enter exprAddPrim
-consume(ADD) => found LESS
-consume(SUB) => found LESS
+consume(ADD) => found SEMICOLON
+consume(SUB) => found SEMICOLON
 Exit exprAddPrim (OK)
 Exit exprAdd (OK)
 Enter exprRelPrim
-consume(LESS) => consumed
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found RPAR
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RPAR
-consume(DOT) => found RPAR
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found RPAR
-consume(DIV) => found RPAR
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found RPAR
-consume(SUB) => found RPAR
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found RPAR
-consume(LESSEQ) => found RPAR
-consume(GREATER) => found RPAR
-consume(GREATEREQ) => found RPAR
-Exit exprRelPrim (OK)
+consume(LESS) => found SEMICOLON
+consume(LESSEQ) => found SEMICOLON
+consume(GREATER) => found SEMICOLON
+consume(GREATEREQ) => found SEMICOLON
 Exit exprRelPrim (OK)
 Exit exprRel (OK)
 Enter exprEqPrim
-consume(EQUAL) => found RPAR
-consume(NOTEQ) => found RPAR
+consume(EQUAL) => found SEMICOLON
+consume(NOTEQ) => found SEMICOLON
 Exit exprEqPrim (OK)
 Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found RPAR
-Exit exprAndPrim (OK)
-Exit exprAndPrim (OK)
+consume(AND) => found SEMICOLON
 Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found RPAR
-Exit exprOrPrim (OK)
+consume(OR) => found SEMICOLON
 Exit exprOr (OK)
 Exit exprAssign (OK)
 Exit expr (OK)
-consume(RPAR) => consumed
+consume(SEMICOLON) => consumed
+Exit stm (OK)
+Enter varDef
+Enter typeBase
+consume(TYPE_INT) => found RACC
+consume(TYPE_DOUBLE) => found RACC
+consume(TYPE_CHAR) => found RACC
+consume(STRUCT) => found RACC
+Exit typeBase (FAIL)
+Exit varDef (FAIL)
 Enter stm
 Enter stmCompound
+consume(LACC) => found RACC
+Exit stmCompound (FAIL)
+consume(IF) => found RACC
+consume(WHILE) => found RACC
+consume(RETURN) => found RACC
+Enter expr
+Enter exprAssign
+consume(SUB) => found RACC
+consume(NOT) => found RACC
+Enter exprPostfix
+consume(ID) => found RACC
+consume(INT) => found RACC
+consume(DOUBLE) => found RACC
+consume(CHAR) => found RACC
+consume(STRING) => found RACC
+consume(LPAR) => found RACC
+Exit exprPostfix (FAIL)
+Enter exprOr
+Enter exprAnd
+Enter exprEq
+Enter exprRel
+Enter exprAdd
+Enter exprMul
+Enter exprCast
+consume(LPAR) => found RACC
+consume(SUB) => found RACC
+consume(NOT) => found RACC
+Enter exprPostfix
+consume(ID) => found RACC
+consume(INT) => found RACC
+consume(DOUBLE) => found RACC
+consume(CHAR) => found RACC
+consume(STRING) => found RACC
+consume(LPAR) => found RACC
+Exit exprPostfix (FAIL)
+Exit exprCast (FAIL)
+Exit exprMul (FAIL)
+Exit exprAdd (FAIL)
+Exit exprRel (FAIL)
+Exit exprEq (FAIL)
+Exit exprAnd (FAIL)
+Exit exprOr (FAIL)
+Exit exprAssign (FAIL)
+Exit expr (FAIL)
+consume(SEMICOLON) => found RACC
+Exit stm (FAIL)
+consume(RACC) => consumed
+Exit stmCompound (OK)
+Exit fnDef (OK)
+Enter structDef
+consume(STRUCT) => found VOID
+Exit structDef (FAIL)
+Enter fnDef
+Enter typeBase
+consume(TYPE_INT) => found VOID
+consume(TYPE_DOUBLE) => found VOID
+consume(TYPE_CHAR) => found VOID
+consume(STRUCT) => found VOID
+Exit typeBase (FAIL)
+consume(VOID) => consumed
+consume(ID) => consumed
+consume(LPAR) => consumed
+Enter fnParam
+Enter typeBase
+consume(TYPE_INT) => found RPAR
+consume(TYPE_DOUBLE) => found RPAR
+consume(TYPE_CHAR) => found RPAR
+consume(STRUCT) => found RPAR
+Exit typeBase (FAIL)
+Exit fnParam (FAIL)
+consume(RPAR) => consumed
+Enter stmCompound
 consume(LACC) => consumed
+Enter varDef
+Enter typeBase
+consume(TYPE_INT) => consumed
+Exit typeBase (OK)
+consume(ID) => consumed
+Enter arrayDecl
+consume(LBRACKET) => found SEMICOLON
+Exit arrayDecl (FAIL)
+consume(SEMICOLON) => consumed
+Exit varDef (OK)
 Enter varDef
 Enter typeBase
 consume(TYPE_INT) => found ID
@@ -648,1183 +1049,20 @@ consume(WHILE) => found ID
 consume(RETURN) => found ID
 Enter expr
 Enter exprAssign
-Enter exprUnary
 consume(SUB) => found ID
 consume(NOT) => found ID
 Enter exprPostfix
-Enter exprPrimary
 consume(ID) => consumed
-consume(LPAR) => consumed
-Enter expr
+consume(LPAR) => found ASSIGN
+Enter exprPostfixPrim
+consume(LBRACKET) => found ASSIGN
+consume(DOT) => found ASSIGN
+Exit exprPostfixPrim (OK)
+Exit exprPostfix (OK)
+consume(ASSIGN) => consumed
 Enter exprAssign
-Enter exprUnary
 consume(SUB) => found ID
 consume(NOT) => found ID
 Enter exprPostfix
-Enter exprPrimary
 consume(ID) => consumed
-consume(LPAR) => found LBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found RBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RBRACKET
-consume(DOT) => found RBRACKET
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found RBRACKET
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found RBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RBRACKET
-consume(DOT) => found RBRACKET
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found RBRACKET
-consume(DIV) => found RBRACKET
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found RBRACKET
-consume(SUB) => found RBRACKET
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found RBRACKET
-consume(LESSEQ) => found RBRACKET
-consume(GREATER) => found RBRACKET
-consume(GREATEREQ) => found RBRACKET
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found RBRACKET
-consume(NOTEQ) => found RBRACKET
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found RBRACKET
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found RBRACKET
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(RBRACKET) => consumed
-Enter exprPostfixPrim
-consume(LBRACKET) => found DOT
-consume(DOT) => consumed
-consume(ID) => consumed
-Enter exprPostfixPrim
-consume(LBRACKET) => found COMMA
-consume(DOT) => found COMMA
-Exit exprPostfixPrim (OK)
-Exit exprPostfixPrim (OK)
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found COMMA
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found LBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found RBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RBRACKET
-consume(DOT) => found RBRACKET
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found RBRACKET
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found RBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RBRACKET
-consume(DOT) => found RBRACKET
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found RBRACKET
-consume(DIV) => found RBRACKET
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found RBRACKET
-consume(SUB) => found RBRACKET
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found RBRACKET
-consume(LESSEQ) => found RBRACKET
-consume(GREATER) => found RBRACKET
-consume(GREATEREQ) => found RBRACKET
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found RBRACKET
-consume(NOTEQ) => found RBRACKET
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found RBRACKET
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found RBRACKET
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(RBRACKET) => consumed
-Enter exprPostfixPrim
-consume(LBRACKET) => found DOT
-consume(DOT) => consumed
-consume(ID) => consumed
-Enter exprPostfixPrim
-consume(LBRACKET) => found COMMA
-consume(DOT) => found COMMA
-Exit exprPostfixPrim (OK)
-Exit exprPostfixPrim (OK)
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found COMMA
-consume(DIV) => found COMMA
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found COMMA
-consume(SUB) => found COMMA
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found COMMA
-consume(LESSEQ) => found COMMA
-consume(GREATER) => found COMMA
-consume(GREATEREQ) => found COMMA
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found COMMA
-consume(NOTEQ) => found COMMA
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found COMMA
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found COMMA
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(COMMA) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found COMMA
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found COMMA
-consume(DOT) => found COMMA
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found COMMA
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found COMMA
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found COMMA
-consume(DOT) => found COMMA
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found COMMA
-consume(DIV) => found COMMA
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found COMMA
-consume(SUB) => found COMMA
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found COMMA
-consume(LESSEQ) => found COMMA
-consume(GREATER) => found COMMA
-consume(GREATEREQ) => found COMMA
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found COMMA
-consume(NOTEQ) => found COMMA
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found COMMA
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found COMMA
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(COMMA) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found CHAR
-consume(NOT) => found CHAR
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found CHAR
-consume(INT) => found CHAR
-consume(DOUBLE) => found CHAR
-consume(CHAR) => consumed
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RPAR
-consume(DOT) => found RPAR
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found RPAR
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found CHAR
-Enter exprUnary
-consume(SUB) => found CHAR
-consume(NOT) => found CHAR
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found CHAR
-consume(INT) => found CHAR
-consume(DOUBLE) => found CHAR
-consume(CHAR) => consumed
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RPAR
-consume(DOT) => found RPAR
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found RPAR
-consume(DIV) => found RPAR
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found RPAR
-consume(SUB) => found RPAR
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found RPAR
-consume(LESSEQ) => found RPAR
-consume(GREATER) => found RPAR
-consume(GREATEREQ) => found RPAR
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found RPAR
-consume(NOTEQ) => found RPAR
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found RPAR
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found RPAR
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(COMMA) => found RPAR
-consume(RPAR) => consumed
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found SEMICOLON
-consume(DOT) => found SEMICOLON
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found SEMICOLON
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found LBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found RBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RBRACKET
-consume(DOT) => found RBRACKET
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found RBRACKET
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found RBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RBRACKET
-consume(DOT) => found RBRACKET
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found RBRACKET
-consume(DIV) => found RBRACKET
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found RBRACKET
-consume(SUB) => found RBRACKET
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found RBRACKET
-consume(LESSEQ) => found RBRACKET
-consume(GREATER) => found RBRACKET
-consume(GREATEREQ) => found RBRACKET
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found RBRACKET
-consume(NOTEQ) => found RBRACKET
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found RBRACKET
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found RBRACKET
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(RBRACKET) => consumed
-Enter exprPostfixPrim
-consume(LBRACKET) => found DOT
-consume(DOT) => consumed
-consume(ID) => consumed
-Enter exprPostfixPrim
-consume(LBRACKET) => found COMMA
-consume(DOT) => found COMMA
-Exit exprPostfixPrim (OK)
-Exit exprPostfixPrim (OK)
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found COMMA
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found LBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found RBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RBRACKET
-consume(DOT) => found RBRACKET
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found RBRACKET
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found RBRACKET
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RBRACKET
-consume(DOT) => found RBRACKET
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found RBRACKET
-consume(DIV) => found RBRACKET
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found RBRACKET
-consume(SUB) => found RBRACKET
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found RBRACKET
-consume(LESSEQ) => found RBRACKET
-consume(GREATER) => found RBRACKET
-consume(GREATEREQ) => found RBRACKET
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found RBRACKET
-consume(NOTEQ) => found RBRACKET
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found RBRACKET
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found RBRACKET
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(RBRACKET) => consumed
-Enter exprPostfixPrim
-consume(LBRACKET) => found DOT
-consume(DOT) => consumed
-consume(ID) => consumed
-Enter exprPostfixPrim
-consume(LBRACKET) => found COMMA
-consume(DOT) => found COMMA
-Exit exprPostfixPrim (OK)
-Exit exprPostfixPrim (OK)
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found COMMA
-consume(DIV) => found COMMA
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found COMMA
-consume(SUB) => found COMMA
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found COMMA
-consume(LESSEQ) => found COMMA
-consume(GREATER) => found COMMA
-consume(GREATEREQ) => found COMMA
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found COMMA
-consume(NOTEQ) => found COMMA
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found COMMA
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found COMMA
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(COMMA) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found COMMA
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found COMMA
-consume(DOT) => found COMMA
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found COMMA
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found ID
-Enter exprUnary
-consume(SUB) => found ID
-consume(NOT) => found ID
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => consumed
-consume(LPAR) => found COMMA
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found COMMA
-consume(DOT) => found COMMA
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found COMMA
-consume(DIV) => found COMMA
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found COMMA
-consume(SUB) => found COMMA
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found COMMA
-consume(LESSEQ) => found COMMA
-consume(GREATER) => found COMMA
-consume(GREATEREQ) => found COMMA
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found COMMA
-consume(NOTEQ) => found COMMA
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found COMMA
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found COMMA
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(COMMA) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found CHAR
-consume(NOT) => found CHAR
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found CHAR
-consume(INT) => found CHAR
-consume(DOUBLE) => found CHAR
-consume(CHAR) => consumed
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RPAR
-consume(DOT) => found RPAR
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found RPAR
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found CHAR
-Enter exprUnary
-consume(SUB) => found CHAR
-consume(NOT) => found CHAR
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found CHAR
-consume(INT) => found CHAR
-consume(DOUBLE) => found CHAR
-consume(CHAR) => consumed
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found RPAR
-consume(DOT) => found RPAR
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found RPAR
-consume(DIV) => found RPAR
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found RPAR
-consume(SUB) => found RPAR
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found RPAR
-consume(LESSEQ) => found RPAR
-consume(GREATER) => found RPAR
-consume(GREATEREQ) => found RPAR
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found RPAR
-consume(NOTEQ) => found RPAR
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found RPAR
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found RPAR
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(COMMA) => found RPAR
-consume(RPAR) => consumed
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found SEMICOLON
-consume(DOT) => found SEMICOLON
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found SEMICOLON
-consume(DIV) => found SEMICOLON
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found SEMICOLON
-consume(SUB) => found SEMICOLON
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found SEMICOLON
-consume(LESSEQ) => found SEMICOLON
-consume(GREATER) => found SEMICOLON
-consume(GREATEREQ) => found SEMICOLON
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found SEMICOLON
-consume(NOTEQ) => found SEMICOLON
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found SEMICOLON
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found SEMICOLON
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(SEMICOLON) => consumed
-Exit stm (OK)
-Enter varDef
-Enter typeBase
-consume(TYPE_INT) => found RETURN
-consume(TYPE_DOUBLE) => found RETURN
-consume(TYPE_CHAR) => found RETURN
-consume(STRUCT) => found RETURN
-Exit typeBase (FAIL)
-Exit varDef (FAIL)
-Enter stm
-Enter stmCompound
-consume(LACC) => found RETURN
-Exit stmCompound (FAIL)
-consume(IF) => found RETURN
-consume(WHILE) => found RETURN
-consume(RETURN) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found INT
-consume(NOT) => found INT
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found INT
-consume(INT) => consumed
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found SEMICOLON
-consume(DOT) => found SEMICOLON
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found SEMICOLON
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found INT
-Enter exprUnary
-consume(SUB) => found INT
-consume(NOT) => found INT
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found INT
-consume(INT) => consumed
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found SEMICOLON
-consume(DOT) => found SEMICOLON
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found SEMICOLON
-consume(DIV) => found SEMICOLON
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found SEMICOLON
-consume(SUB) => found SEMICOLON
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found SEMICOLON
-consume(LESSEQ) => found SEMICOLON
-consume(GREATER) => found SEMICOLON
-consume(GREATEREQ) => found SEMICOLON
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found SEMICOLON
-consume(NOTEQ) => found SEMICOLON
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found SEMICOLON
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found SEMICOLON
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(SEMICOLON) => consumed
-Exit stm (OK)
-Enter varDef
-Enter typeBase
-consume(TYPE_INT) => found RACC
-consume(TYPE_DOUBLE) => found RACC
-consume(TYPE_CHAR) => found RACC
-consume(STRUCT) => found RACC
-Exit typeBase (FAIL)
-Exit varDef (FAIL)
-Enter stm
-Enter stmCompound
-consume(LACC) => found RACC
-Exit stmCompound (FAIL)
-consume(IF) => found RACC
-consume(WHILE) => found RACC
-consume(RETURN) => found RACC
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found RACC
-consume(NOT) => found RACC
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found RACC
-consume(INT) => found RACC
-consume(DOUBLE) => found RACC
-consume(CHAR) => found RACC
-consume(STRING) => found RACC
-consume(LPAR) => found RACC
-Exit exprPrimary (FAIL)
-Exit exprPostfix (FAIL)
-Exit exprUnary (FAIL)
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found RACC
-Enter exprUnary
-consume(SUB) => found RACC
-consume(NOT) => found RACC
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found RACC
-consume(INT) => found RACC
-consume(DOUBLE) => found RACC
-consume(CHAR) => found RACC
-consume(STRING) => found RACC
-consume(LPAR) => found RACC
-Exit exprPrimary (FAIL)
-Exit exprPostfix (FAIL)
-Exit exprUnary (FAIL)
-Exit exprCast (FAIL)
-Exit exprMul (FAIL)
-Exit exprAdd (FAIL)
-Exit exprRel (FAIL)
-Exit exprEq (FAIL)
-Exit exprAnd (FAIL)
-Exit exprOr (FAIL)
-Exit exprAssign (FAIL)
-Exit expr (FAIL)
-consume(SEMICOLON) => found RACC
-Exit stm (FAIL)
-consume(RACC) => consumed
-Exit stmCompound (OK)
-Exit stm (OK)
-consume(ELSE) => found RETURN
-Exit stm (OK)
-Enter varDef
-Enter typeBase
-consume(TYPE_INT) => found RETURN
-consume(TYPE_DOUBLE) => found RETURN
-consume(TYPE_CHAR) => found RETURN
-consume(STRUCT) => found RETURN
-Exit typeBase (FAIL)
-Exit varDef (FAIL)
-Enter stm
-Enter stmCompound
-consume(LACC) => found RETURN
-Exit stmCompound (FAIL)
-consume(IF) => found RETURN
-consume(WHILE) => found RETURN
-consume(RETURN) => consumed
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found INT
-consume(NOT) => found INT
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found INT
-consume(INT) => consumed
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found SEMICOLON
-consume(DOT) => found SEMICOLON
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-consume(ASSIGN) => found SEMICOLON
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found INT
-Enter exprUnary
-consume(SUB) => found INT
-consume(NOT) => found INT
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found INT
-consume(INT) => consumed
-Exit exprPrimary (OK)
-Enter exprPostfixPrim
-consume(LBRACKET) => found SEMICOLON
-consume(DOT) => found SEMICOLON
-Exit exprPostfixPrim (OK)
-Exit exprPostfix (OK)
-Exit exprUnary (OK)
-Exit exprCast (OK)
-Enter exprMulPrim
-consume(MUL) => found SEMICOLON
-consume(DIV) => found SEMICOLON
-Exit exprMulPrim (OK)
-Exit exprMul (OK)
-Enter exprAddPrim
-consume(ADD) => found SEMICOLON
-consume(SUB) => found SEMICOLON
-Exit exprAddPrim (OK)
-Exit exprAdd (OK)
-Enter exprRelPrim
-consume(LESS) => found SEMICOLON
-consume(LESSEQ) => found SEMICOLON
-consume(GREATER) => found SEMICOLON
-consume(GREATEREQ) => found SEMICOLON
-Exit exprRelPrim (OK)
-Exit exprRel (OK)
-Enter exprEqPrim
-consume(EQUAL) => found SEMICOLON
-consume(NOTEQ) => found SEMICOLON
-Exit exprEqPrim (OK)
-Exit exprEq (OK)
-Enter exprAndPrim
-consume(AND) => found SEMICOLON
-Exit exprAndPrim (OK)
-Exit exprAnd (OK)
-Enter exprOrPrim
-consume(OR) => found SEMICOLON
-Exit exprOrPrim (OK)
-Exit exprOr (OK)
-Exit exprAssign (OK)
-Exit expr (OK)
-consume(SEMICOLON) => consumed
-Exit stm (OK)
-Enter varDef
-Enter typeBase
-consume(TYPE_INT) => found RACC
-consume(TYPE_DOUBLE) => found RACC
-consume(TYPE_CHAR) => found RACC
-consume(STRUCT) => found RACC
-Exit typeBase (FAIL)
-Exit varDef (FAIL)
-Enter stm
-Enter stmCompound
-consume(LACC) => found RACC
-Exit stmCompound (FAIL)
-consume(IF) => found RACC
-consume(WHILE) => found RACC
-consume(RETURN) => found RACC
-Enter expr
-Enter exprAssign
-Enter exprUnary
-consume(SUB) => found RACC
-consume(NOT) => found RACC
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found RACC
-consume(INT) => found RACC
-consume(DOUBLE) => found RACC
-consume(CHAR) => found RACC
-consume(STRING) => found RACC
-consume(LPAR) => found RACC
-Exit exprPrimary (FAIL)
-Exit exprPostfix (FAIL)
-Exit exprUnary (FAIL)
-Enter exprOr
-Enter exprAnd
-Enter exprEq
-Enter exprRel
-Enter exprAdd
-Enter exprMul
-Enter exprCast
-consume(LPAR) => found RACC
-Enter exprUnary
-consume(SUB) => found RACC
-consume(NOT) => found RACC
-Enter exprPostfix
-Enter exprPrimary
-consume(ID) => found RACC
-consume(INT) => found RACC
-consume(DOUBLE) => found RACC
-consume(CHAR) => found RACC
-consume(STRING) => found RACC
-consume(LPAR) => found RACC
-Exit exprPrimary (FAIL)
-Exit exprPostfix (FAIL)
-Exit exprUnary (FAIL)
-Exit exprCast (FAIL)
-Exit exprMul (FAIL)
-Exit exprAdd (FAIL)
-Exit exprRel (FAIL)
-Exit exprEq (FAIL)
-Exit exprAnd (FAIL)
-Exit exprOr (FAIL)
-Exit exprAssign (FAIL)
-Exit expr (FAIL)
-consume(SEMICOLON) => found RACC
-Exit stm (FAIL)
-consume(RACC) => consumed
-Exit stmCompound (OK)
-Exit fnDef (OK)
-Enter structDef
-consume(STRUCT) => found END
-Exit structDef (FAIL)
-Enter fnDef
-Enter typeBase
-consume(TYPE_INT) => found END
-consume(TYPE_DOUBLE) => found END
-consume(TYPE_CHAR) => found END
-consume(STRUCT) => found END
-Exit typeBase (FAIL)
-consume(VOID) => found END
-Exit fnDef (FAIL)
-Enter varDef
-Enter typeBase
-consume(TYPE_INT) => found END
-consume(TYPE_DOUBLE) => found END
-consume(TYPE_CHAR) => found END
-consume(STRUCT) => found END
-Exit typeBase (FAIL)
-Exit varDef (FAIL)
-consume(END) => consumed
-Exit unit (OK)
+consume(LPAR) => found SEMICOLON

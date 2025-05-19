@@ -648,27 +648,28 @@ bool exprOr(Ret *r) {
 }
 
 // exprOrPrim: OR exprAnd exprOrPrim | epsilon
-bool exprOrPrim(Ret *r) { 
-    rule_start("exprOrPrim");
-    if (consume(OR)) {
-        Ret right;
-        if (exprAnd(&right)) {
-            if (!canBeScalar(r)) tkerr("left operand of || must be scalar");
-            if (!canBeScalar(&right)) tkerr("right operand of || must be scalar");
-            *r = (Ret){{TB_INT, NULL, -1}, false, r->ct && right.ct}; 
-            
-            if (exprOrPrim(r)) {
-                 rule_end("exprOrPrim", true);
-                 return true;
-            }
-        } else {
-            tkerr("invalid expression after || operator");
-            return false; 
-        }
-    }
-    // Epsilon case
-    rule_end("exprOrPrim", true); 
-    return true;
+bool exprOrPrim(Ret *r)
+{
+	if (consume(OR))
+	{
+		Ret right;
+		if (!exprAnd(&right))
+		{
+			tkerr("expresie lipsa dupa ||");
+			return false;
+		}
+
+		Type tDst;
+
+		if (!arithTypeTo(&r->type, &right.type, &tDst))
+		{
+			tkerr("invalid operand types for ||");
+		}
+		*r = (Ret){{TB_INT, NULL, -1}, false, true};
+
+		return exprOrPrim(r);
+	}
+	return true;
 }
 
 // exprAnd: exprEq exprAndPrim
@@ -687,25 +688,28 @@ bool exprAnd(Ret *r) {
 }
 
 // exprAndPrim: AND exprEq exprAndPrim | epsilon
-bool exprAndPrim(Ret *r) { 
-    rule_start("exprAndPrim");
-    if (consume(AND)) {
-        Ret right;
-        if (exprEq(&right)) {
-            if (!canBeScalar(r)) tkerr("left operand of && must be scalar");
-            if (!canBeScalar(&right)) tkerr("right operand of && must be scalar");
-            *r = (Ret){{TB_INT, NULL, -1}, false, r->ct && right.ct};
-            if (exprAndPrim(r)) {
-                rule_end("exprAndPrim", true);
-                return true;
-            }
-        } else {
-            tkerr("invalid expression after && operator");
-            return false;
-        }
-    }
-    rule_end("exprAndPrim", true);
-    return true;
+bool exprAndPrim(Ret *r)
+{
+	if (consume(AND))
+	{
+		Ret right;
+		if (!exprAnd(&right))
+		{
+			tkerr("expresie lipsa dupa &&");
+			return false;
+		}
+
+		Type tDst;
+
+		if (!arithTypeTo(&r->type, &right.type, &tDst))
+		{
+			tkerr("invalid operand types for &&");
+		}
+		*r = (Ret){{TB_INT, NULL, -1}, false, true};
+
+		return exprAndPrim(r);
+	}
+	return true;
 }
 
 // exprEq: exprRel exprEqPrim
@@ -907,34 +911,41 @@ bool exprCast(Ret *r) {
 }
 
 // exprUnary: (SUB | NOT) exprUnary | exprPostfix
-bool exprUnary(Ret *r) {
-    rule_start("exprUnary");
-    Token* start = iTk;
-    Token* opTk = iTk;
-
-    if (consume(SUB) || consume(NOT)) {
-        if (exprUnary(r)) { 
-            if(!canBeScalar(r)) tkerr("unary %s must have a scalar operand", opTk->code == SUB ? "-":"!");
-            
-            r->lval = false;
-            if(opTk->code == NOT){
-                r->type = (Type){TB_INT, NULL, -1};
-            }
-            rule_end("exprUnary", true);
-            return true;
-        } else {
-             tkerr("invalid expression after unary operator '%s'", opTk->code == SUB ? "-":"!");
-        }
-    }
-
-    if (exprPostfix(r)) {
-        rule_end("exprUnary", true);
-        return true;
-    }
-
-    iTk = start;
-    rule_end("exprUnary", false);
-    return false;
+bool exprUnary(Ret *r)
+{
+	// Token *op_tk = iTk;
+	if (consume(SUB))
+	{
+		if (exprUnary(r))
+		{
+			if (!canBeScalar(r))
+				tkerr("unary - must have a scalar operand");
+			r->lval = false;
+			r->ct = true;
+			return true;
+		}
+		else
+		{
+			tkerr("expresie invalida dupa operatorul unar -");
+		}
+	}
+	else if (consume(NOT))
+	{
+		if (exprUnary(r))
+		{
+			if (!canBeScalar(r))
+				tkerr("unary ! must have a scalar operand");
+			r->lval = false;
+			r->ct = true;
+			r->type = (Type){TB_INT, NULL, -1};
+			return true;
+		}
+		else
+		{
+			tkerr("expresie invalida dupa operatorul unar !");
+		}
+	}
+	return exprPostfix(r);
 }
 
 
@@ -1009,70 +1020,92 @@ bool exprPostfixPrim(Ret *r) {
 
 
 // exprPrimary: ID (LPAR (expr (COMMA expr)*)? RPAR)? | INT | DOUBLE | CHAR | STRING | LPAR expr RPAR
-bool exprPrimary(Ret *r) {
-    rule_start("exprPrimary");
-    Token* start = iTk;
+bool exprPrimary(Ret *r)
+{
+	if (consume(ID))
+	{
+		Token *tkName = consumedTk;
+		Symbol *s = findSymbol(tkName->text);
+		if (!s)
+			tkerr("undefined id: %s", tkName->text);
 
-    if (consume(ID)) {
-        Token* tkName = consumedTk; 
-        Symbol *s = findSymbol(tkName->text);
-        if (!s) tkerr("undefined id: %s", tkName->text);
+		if (consume(LPAR))
+		{
+			if (s->kind != SK_FN)
+				tkerr("only a function can be called");
+			Symbol *param = s->fn.params;
+			Ret rArg;
+			if (iTk->code != RPAR)
+			{
+				do
+				{
+					if (!expr(&rArg))
+						tkerr("invalid expression for argument in function call %s", tkName->text);
+					if (!param)
+						tkerr("too many arguments in function call %s", tkName->text);
+					if (!convTo(&rArg.type, &param->type))
+						tkerr("in call to %s, cannot convert argument type to parameter type", tkName->text);
+					param = param->next;
+				} while (consume(COMMA));
+			}
+			if (param)
+				tkerr("too few arguments in function call %s", tkName->text);
+			if (!consume(RPAR))
+				tkerr("lipseste ) dupa argumentele functiei %s", tkName->text);
+			*r = (Ret){s->type, false, true};
+			return true;
+		}
+		if (s->kind == SK_FN)
+			tkerr("function %s cannot be used as a value", tkName->text);
+		*r = (Ret){s->type, true, (s->type.n >= 0)};
+		return true;
+	}
 
-        if (consume(LPAR)) { 
-            if (s->kind != SK_FN) tkerr("only a function can be called: %s", tkName->text);
-            
-            Ret rArg;
-            Symbol *param = s->fn.params;
-            if (iTk->code != RPAR) { 
-                if (!expr(&rArg)) tkerr("invalid expression for argument in call to %s", tkName->text);
-                if (!param) tkerr("too many arguments in function call to %s", tkName->text);
-                if (!convTo(&rArg.type, &param->type)) {
-                    tkerr("in call to %s, cannot convert argument type to parameter type for param '%s'", tkName->text, param->name);
-                }
-                param = param->next;
-
-                while (consume(COMMA)) {
-                    if (!expr(&rArg)) tkerr("invalid expression for argument after comma in call to %s", tkName->text);
-                    if (!param) tkerr("too many arguments in function call to %s", tkName->text);
-                    if (!convTo(&rArg.type, &param->type)) {
-                         tkerr("in call to %s, cannot convert argument type to parameter type for param '%s'", tkName->text, param->name);
-                    }
-                    param = param->next;
-                }
-            }
-            if (!consume(RPAR)) tkerr("missing ) after arguments in call to %s", tkName->text);
-            if (param) tkerr("too few arguments in function call to %s", tkName->text);
-
-            *r = (Ret){s->type, false, true}; 
-            rule_end("exprPrimary", true); return true;
-
-        } else { 
-            if (s->kind == SK_FN) tkerr("a function name must be followed by () to be called: %s", tkName->text);
-            *r = (Ret){s->type, true, (s->type.n >= 0)};
-            rule_end("exprPrimary", true); return true;
-        }
-    }
-
-    if (consume(INT)) { *r = (Ret){{TB_INT, NULL, -1}, false, true}; rule_end("exprPrimary", true); return true; }
-    if (consume(DOUBLE)) { *r = (Ret){{TB_DOUBLE, NULL, -1}, false, true}; rule_end("exprPrimary", true); return true; }
-    if (consume(CHAR)) { *r = (Ret){{TB_CHAR, NULL, -1}, false, true}; rule_end("exprPrimary", true); return true; }
-    if (consume(STRING)) { *r = (Ret){{TB_CHAR, NULL, 0}, false, true}; rule_end("exprPrimary", true); return true; }
-
-    if (consume(LPAR)) {
-        if (expr(r)) { 
-            if (consume(RPAR)) {
-                 rule_end("exprPrimary", true);
-                 return true; 
-            }
-            tkerr("missing ) after expression in parentheses");
-        } else { 
-            tkerr("invalid or missing expression after (");
-        }
-    }
-
-    iTk = start; 
-    rule_end("exprPrimary", false);
-    return false;
+	if (consume(INT))
+	{
+		*r = (Ret){{TB_INT, NULL, -1}, false, true};
+		return true;
+	}
+	if (consume(DOUBLE))
+	{
+		*r = (Ret){{TB_DOUBLE, NULL, -1}, false, true};
+		return true;
+	}
+	if (consume(CHAR))
+	{
+		*r = (Ret){{TB_CHAR, NULL, -1}, false, true};
+		return true;
+	}
+	if (consume(STRING))
+	{
+		*r = (Ret){{TB_CHAR, NULL, 0}, false, true};
+		return true;
+	}
+	{
+		Token *start = iTk;
+		if (consume(LPAR))
+		{
+			if (iTk->code == TYPE_INT || iTk->code == TYPE_DOUBLE ||
+				iTk->code == TYPE_CHAR || iTk->code == STRUCT)
+			{
+				iTk = start;
+			}
+			else
+			{
+				if (expr(r))
+				{
+					if (!consume(RPAR))
+						tkerr("lipseste ) dupa expresie in paranteze");
+					return true;
+				}
+				else
+				{
+					tkerr("expresie invalida dupa (");
+				}
+			}
+		}
+	}
+	return false;
 }
 
 // unit: (structDef | fnDef | varDef)* END
