@@ -32,11 +32,15 @@ int main(int argc, char *argv[]) {
     vmInit();    
 
     parse(tokens); 
+    
+    Symbol *symMain = findSymbolInDomain(symTable, "main");
+    if (!symMain) err("missing main function");
+    Instr *entryCode = NULL;
+    addInstr(&entryCode, OP_CALL)->arg.instr = symMain->fn.instr;
+    addInstr(&entryCode, OP_HALT);
+    run(entryCode);
 
-    Instr *code = genTestDoubleProgram(); 
-	run(code);
-
-    dropDomain(); 
+    dropDomain();
 
     // Cleanup
     free(source);
@@ -44,7 +48,7 @@ int main(int argc, char *argv[]) {
     Token *tk = tokens;
     while (tk) {
         Token *next = tk->next;
-        if (tk->code == ID || tk->code == STRING) {
+        if ((tk->code == ID || tk->code == STRING) && tk->text) {
             free(tk->text);
         }
         free(tk);

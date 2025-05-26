@@ -1,8 +1,6 @@
 // domain: global
-Symbol: S, Kind: 3
-Symbol: a, Kind: 0
-Symbol: v, Kind: 0
-Symbol: f, Kind: 2
-Symbol: h, Kind: 2
+Symbol: put_i, Kind: 2
+Symbol: fact, Kind: 2
+Symbol: main, Kind: 2
 
 
