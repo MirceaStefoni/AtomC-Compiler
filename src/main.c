@@ -3,6 +3,9 @@
 #include "lexer.h"
 #include "parser.h"
 #include "utils.h"
+#include "vm.h"
+#include "ad.h"
+#include "at.h"
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
@@ -25,9 +28,15 @@ int main(int argc, char *argv[]) {
 
     showTokens(tokens); 
 
+    pushDomain(); 
+    vmInit();    
+
     parse(tokens); 
 
-    printf("Syntax analysis completed successfully.\n");
+    Instr *code = genTestDoubleProgram(); 
+	run(code);
+
+    dropDomain(); 
 
     // Cleanup
     free(source);
